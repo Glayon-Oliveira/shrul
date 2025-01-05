@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.lmlasmo.shrul.dto.register.SignupDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +26,7 @@ public class User {
 	private BigInteger id;
 	
 	@Column
-	private String email;	
+	private String email;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -44,7 +46,13 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private Set<Prefix> prefixes = new HashSet<>(); 
 	
-	public User() {}	
+	public User() {}
+
+	public User(SignupDTO signup) {
+		this.email = signup.getEmail();		
+		this.firstName = signup.getFirstName();
+		this.lastName = signup.getLastName();
+	}
 
 	public BigInteger getId() {
 		return id;
@@ -60,7 +68,7 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
+	}	
 
 	public String getFirstName() {
 		return firstName;
