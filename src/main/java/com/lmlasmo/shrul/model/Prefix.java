@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.lmlasmo.shrul.dto.PrefixDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,6 +36,12 @@ public class Prefix {
 	private Set<Link> links = new HashSet<>();
 	
 	public Prefix() {}
+
+	public Prefix(PrefixDTO prefixDTO) {
+		this.prefix = prefixDTO.getPrefix();
+		this.user = new User();
+		this.user.setId(prefixDTO.getUser());
+	}
 
 	public BigInteger getId() {
 		return id;
