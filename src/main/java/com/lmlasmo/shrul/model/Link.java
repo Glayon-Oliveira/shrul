@@ -1,11 +1,14 @@
 package com.lmlasmo.shrul.model;
 
+import com.lmlasmo.shrul.dto.LinkDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 
 @Entity
 @Table(name = "links")
@@ -22,6 +25,12 @@ public class Link {
 	private Prefix prefix;
 	
 	public Link() {}
+
+	public Link(@Valid LinkDTO linkDTO) {
+		this.destination = linkDTO.getDestination();
+		this.prefix = new Prefix();
+		this.prefix.setId(linkDTO.getPrefix());
+	}
 
 	public String getId() {
 		return id;
