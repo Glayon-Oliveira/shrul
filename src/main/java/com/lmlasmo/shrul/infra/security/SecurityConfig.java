@@ -8,9 +8,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import com.lmlasmo.shrul.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,14 +22,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
 		
 		return http.csrf(c -> c.disable())
+				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .formLogin(f -> f.disable())
 				   .httpBasic(Customizer.withDefaults())				   
 				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup").permitAll()
 						   .requestMatchers("/user/**", "/prefix/**", "/link/**").authenticated()
 						   .anyRequest().permitAll())
+				   .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
 				   .build();		
 	}
 	
