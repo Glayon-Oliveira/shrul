@@ -10,6 +10,8 @@ import com.lmlasmo.shrul.model.Link;
 
 public interface LinkRepository extends JpaRepository<Link, String>{
 	
-	public Page<Link> findByPrefixId(BigInteger id, Pageable pageable);
+	public Page<Link> findByPrefixId(BigInteger id, Pageable pageable);	
+
+	public Link findByIdAndPrefixPrefix(String id, String prefix);
 	
 }
