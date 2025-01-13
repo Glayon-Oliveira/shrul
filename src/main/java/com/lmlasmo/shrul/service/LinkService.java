@@ -73,4 +73,18 @@ public class LinkService {
 		return repository.findByPrefixId(id, pageable).map(l -> new LinkDTO(l));		
 	}
 
+	public String getDestination(String id) {
+		
+		Optional<Link> link = repository.findById(id);			
+		
+		return (link.isPresent()) ? link.get().getDestination() : null;
+	}
+
+	public String getDestination(String id, String prefix) {
+		
+		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
+		
+		return (link != null) ? link.getDestination() : null;
+	}
+
 }
