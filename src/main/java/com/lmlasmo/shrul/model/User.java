@@ -2,8 +2,13 @@ package com.lmlasmo.shrul.model;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 
@@ -19,7 +24,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails{
+
+	private static final long serialVersionUID = 6465663904620035131L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +34,9 @@ public class User {
 	
 	@Column
 	private String email;
+	
+	@Column
+	private String password;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -49,7 +59,8 @@ public class User {
 	public User() {}
 
 	public User(SignupDTO signup) {
-		this.email = signup.getEmail();		
+		this.email = signup.getEmail();	
+		this.password = signup.getPassword();
 		this.firstName = signup.getFirstName();
 		this.lastName = signup.getLastName();
 	}
@@ -68,7 +79,15 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}	
+	}		
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -117,5 +136,23 @@ public class User {
 	public void setPrefixes(Set<Prefix> prefixes) {
 		this.prefixes = prefixes;
 	}
-		
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {		
+		return new ArrayList<>();		
+	}
+
+	@Override
+	public String getUsername() {
+		return getEmail();
+	}
+	
+	@Override
+	public boolean isAccountNonLocked() {
+		return !isLocked();
+	}
+	
+	public boolean isEnabled() {		
+		return this.status == UserStatus.ACTIVE;
+	}
 }
