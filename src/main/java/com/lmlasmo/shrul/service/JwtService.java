@@ -34,6 +34,7 @@ public class JwtService {
 				  .withSubject(email)				  
 				  .withIssuedAt(issued)
 				  .withExpiresAt(expires)
+				  .withClaim("roles", roles)
 				  .sign(algorithm);		 		
 	}
 	
@@ -49,7 +50,7 @@ public class JwtService {
 		
 		try {
 			verify.verify(jwt);										
-			return jwt.getSubject() != null;
+			return true;
 		}catch(Exception e) {
 			return false;
 		}
