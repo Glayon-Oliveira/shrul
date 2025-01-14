@@ -14,10 +14,10 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 @Service
 public class JwtService {
 	
-	@Value("SHRUL_JWT_KEY")
+	@Value("${SHRUL_JWT_KEY}")
 	private String JWT_KEY;
 	
-	@Value("SHRUL_JWT_ISSUER")
+	@Value("${SHRUL_JWT_ISSUER}")
 	private String ISSUER;
 
 	public JwtService() {}
@@ -34,6 +34,7 @@ public class JwtService {
 				  .withSubject(email)				  
 				  .withIssuedAt(issued)
 				  .withExpiresAt(expires)
+				  .withClaim("roles", roles)
 				  .sign(algorithm);		 		
 	}
 	
@@ -49,7 +50,7 @@ public class JwtService {
 		
 		try {
 			verify.verify(jwt);										
-			return jwt.getSubject() != null;
+			return true;
 		}catch(Exception e) {
 			return false;
 		}
