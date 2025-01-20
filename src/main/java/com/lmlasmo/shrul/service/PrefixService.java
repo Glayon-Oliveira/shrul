@@ -70,7 +70,7 @@ public class PrefixService {
 		return !repository.existsById(id);
 	}
 
-	public Page<PrefixDTO> findById(BigInteger id, Pageable pageable) {	
+	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {	
 		
 		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
 	}
