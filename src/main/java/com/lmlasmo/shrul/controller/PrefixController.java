@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
+import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.PrefixService;
 
 import jakarta.validation.Valid;
@@ -65,9 +67,11 @@ public class PrefixController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<PrefixDTO>> findById(@RequestParam("user") BigInteger id, Pageable pageable){
+	public ResponseEntity<Page<PrefixDTO>> findById(Pageable pageable){
 		
-		Page<PrefixDTO> prefixPage = service.findById(id, pageable);
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Page<PrefixDTO> prefixPage = service.findByUser(user.getId(), pageable);
 		
 		return ResponseEntity.ok(prefixPage);		
 	}

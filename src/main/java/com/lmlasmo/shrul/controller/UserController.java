@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import com.lmlasmo.shrul.dto.UserDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
+import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.JwtService;
 import com.lmlasmo.shrul.service.UserService;
 
@@ -88,6 +90,14 @@ public class UserController{
 	}
 	
 	@GetMapping
+	public ResponseEntity<UserDTO> getUser(){
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		return ResponseEntity.ok(new UserDTO(user));		
+	}
+	
+	@GetMapping("/search")
 	public Page<UserDTO> findAll(Pageable pageable){
 		return userService.getRepository().findAll(pageable)
 				.map(u -> new UserDTO(u));
