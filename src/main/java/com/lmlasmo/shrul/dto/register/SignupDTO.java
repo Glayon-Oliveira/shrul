@@ -15,9 +15,9 @@ public class SignupDTO extends LoginDTO{
 	@JsonProperty("last_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
-	public String lastName;	
-	
-	public SignupDTO() {}	
+	public String lastName;
+
+	public SignupDTO() {}
 
 	public String getFirstName() {
 		return firstName;
@@ -33,6 +33,6 @@ public class SignupDTO extends LoginDTO{
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName.toUpperCase();
-	}	
-	
+	}
+
 }

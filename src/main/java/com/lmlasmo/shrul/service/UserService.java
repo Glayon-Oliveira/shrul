@@ -23,7 +23,7 @@ public class UserService {
 
 	@Autowired
 	public UserService(UserRepository repository) {
-		this.repository = repository;		
+		this.repository = repository;
 	}
 
 	public UserDTO save(SignupDTO signup) {
@@ -43,7 +43,7 @@ public class UserService {
 		Optional<User> userOp = repository.findById(update.getId());
 
 		if (userOp.isPresent()) {
-			
+
 			User user = userOp.get();
 
 			if (update.getFirstName() == null && update.getLastName() == null) {

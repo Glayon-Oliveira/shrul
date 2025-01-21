@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -41,99 +42,100 @@ public class UserController{
 	private UserService userService;
 	private JwtService jwtService;
 	private EmailService emailService;
-	private AuthenticationManager manager;	
-	
+	private AuthenticationManager manager;
+
+	@Autowired
 	public UserController(UserService userService, JwtService jwtService, EmailService emailService, AuthenticationManager manager) {
-		this.userService = userService;		
+		this.userService = userService;
 		this.jwtService = jwtService;
 		this.emailService = emailService;
 		this.manager = manager;
 	}
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<JwtTokenDTO> login(@RequestBody @Valid LoginDTO login){
-		
+
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
-		
-		Authentication auth = manager.authenticate(authToken);		
-		
-		List<String> authotities = auth.getAuthorities().stream().map(a -> a.getAuthority()).toList(); 
-		
+
+		Authentication auth = manager.authenticate(authToken);
+
+		List<String> authotities = auth.getAuthorities().stream().map(a -> a.getAuthority()).toList();
+
 		String jwtToken = jwtService.gerateToken(auth.getName(), authotities);
-		
+
 		return ResponseEntity.ok(new JwtTokenDTO(jwtToken));
 	}
-		
-	@PostMapping("/signup")	
+
+	@PostMapping("/signup")
 	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupWithCodeHashDTO signup){
-		
+
 		String code = signup.getCode();
 		String hash = signup.getHash();
-		
+
 		if(!EmailCodeTool.confirm(signup.getEmail(), code, hash)) {
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 		UserDTO user = userService.save(signup);
-		
+
 		if(user != null) {
 			return ResponseEntity.ok(user);
 		}
-				
+
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@PostMapping("/send_code")
 	public ResponseEntity<CodeHashDTO> sendCode(@RequestBody @Valid EmailDTO emailDTO){
-		
-		String email = emailDTO.getEmail();				
-		
+
+		String email = emailDTO.getEmail();
+
 		if(userService.getRepository().existsByEmail(email)) {
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 		Map<String,String> codeHash = EmailCodeTool.create(email);
-		
+
 		String code = codeHash.get("code");
 		String hash = codeHash.get("hash");
-		
+
 		emailService.send(email, "Confirmar Conta", code);
-		
+
 		return ResponseEntity.ok(new CodeHashDTO(hash));
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO update){
-		
+
 		UserDTO user = userService.update(update);
-		
+
 		if(user != null) {
 			return ResponseEntity.ok(user);
 		}
-				
+
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@PutMapping("/lock")
 	public ResponseEntity<Object> setLocked(@RequestParam BigInteger id, @RequestParam boolean locked){
-		
+
 		userService.setLocked(id, locked);
-		
+
 		return ResponseEntity.ok().build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<UserDTO> getUser(){
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		return ResponseEntity.ok(new UserDTO(user));		
+
+		return ResponseEntity.ok(new UserDTO(user));
 	}
-	
+
 	@GetMapping("/search")
 	public Page<UserDTO> findAll(Pageable pageable){
 		return userService.getRepository().findAll(pageable)
 				.map(u -> new UserDTO(u));
 	}
-	
+
 }

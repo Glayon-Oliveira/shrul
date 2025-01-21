@@ -24,17 +24,17 @@ public class Prefix {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
-	
+
 	@Column
 	private String prefix;
-		
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@OneToMany(mappedBy = "prefix")
 	private Set<Link> links = new HashSet<>();
-	
+
 	public Prefix() {}
 
 	public Prefix(PrefixDTO prefixDTO) {
@@ -73,6 +73,6 @@ public class Prefix {
 
 	public void setLinks(Set<Link> links) {
 		this.links = links;
-	}		
-	
+	}
+
 }

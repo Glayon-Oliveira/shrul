@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.model.User;
 
 public class UserDTO {
-	
+
 	@JsonProperty
 	private BigInteger id;
 
-	@JsonProperty	
+	@JsonProperty
 	private String email;
 	
 	@JsonProperty("first_name")		
@@ -22,16 +22,16 @@ public class UserDTO {
 	
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
-	
+
 	public UserDTO() {}
-	
+
 	public UserDTO(User user) {
 		this.id = user.getId();
 		this.email = user.getEmail();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.createdAt = user.getCreatedAt();
-	}	
+	}
 
 	public BigInteger getId() {
 		return id;
@@ -72,5 +72,5 @@ public class UserDTO {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-		
+
 }

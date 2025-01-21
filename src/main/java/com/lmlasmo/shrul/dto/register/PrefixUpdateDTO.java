@@ -40,5 +40,5 @@ public class PrefixUpdateDTO {
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
-	
+
 }

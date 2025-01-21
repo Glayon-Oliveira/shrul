@@ -21,49 +21,49 @@ public class JwtService {
 	private String ISSUER;
 
 	public JwtService() {}
-	
+
 	public String gerateToken(String email, List<String> roles) {
-		
+
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);
-		
+
 		Date issued = new Date();
 		Date expires = new Date(System.currentTimeMillis()+60*60*1000);
-		
+
 		return JWT.create()
 				  .withIssuer(ISSUER)
-				  .withSubject(email)				  
+				  .withSubject(email)
 				  .withIssuedAt(issued)
 				  .withExpiresAt(expires)
 				  .withClaim("roles", roles)
-				  .sign(algorithm);		 		
+				  .sign(algorithm);
 	}
-	
+
 	public boolean isTokenValid(String token) {
-		
+
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);
-		
+
 		DecodedJWT jwt = JWT.decode(token);
-		
+
 		JWTVerifier verify = JWT.require(algorithm)
-								 .withIssuer(ISSUER)								 
+								 .withIssuer(ISSUER)
 								 .build();
-		
+
 		try {
-			verify.verify(jwt);										
+			verify.verify(jwt);
 			return true;
 		}catch(Exception e) {
 			return false;
 		}
-				
+
 	}
-	
+
 	public String getEmail(String token) {
-		
+
 		if(isTokenValid(token)) {
 			return JWT.decode(token).getSubject();
 		}
-		
+
 		return null;
 	}
-	
+
 }

@@ -21,7 +21,7 @@ public class UserUpdateDTO {
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
-	
+
 	public UserUpdateDTO(){}
 
 	public BigInteger getId() {
@@ -47,5 +47,5 @@ public class UserUpdateDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName.toUpperCase();
 	}
-	
+
 }

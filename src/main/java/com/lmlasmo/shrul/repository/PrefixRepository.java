@@ -11,9 +11,9 @@ import com.lmlasmo.shrul.model.Prefix;
 public interface PrefixRepository extends JpaRepository<Prefix, BigInteger>{
 
 	public boolean existsByPrefix(String prefix);
-	
+
 	public boolean existsByUserIdAndPrefixIsNull(BigInteger id);
 
 	public Page<Prefix> findByUserId(BigInteger id, Pageable pageable);
-	
+
 }

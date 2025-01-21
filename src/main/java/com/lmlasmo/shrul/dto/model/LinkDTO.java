@@ -13,9 +13,9 @@ import jakarta.validation.constraints.NotNull;
 
 public class LinkDTO {
 
-	@JsonProperty(required = false)	
+	@JsonProperty(required = false)
 	private String id;
-	
+
 	@JsonProperty
 	@NotBlank
 	@URL
@@ -25,9 +25,9 @@ public class LinkDTO {
 	@NotNull
 	@Min(1)
 	private BigInteger prefix;
-	
+
 	public LinkDTO() {}
-	
+
 	public LinkDTO(Link link) {
 		this.id = link.getId();
 		this.destination = link.getDestination();
@@ -56,6 +56,6 @@ public class LinkDTO {
 
 	public void setPrefix(BigInteger prefix) {
 		this.prefix = prefix;
-	}	
-	
+	}
+
 }
