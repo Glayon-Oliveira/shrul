@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lmlasmo.shrul.dto.PrefixDTO;
+import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.PrefixService;

@@ -23,7 +23,7 @@ public class SignupDTO extends LoginDTO{
 		return firstName;
 	}
 
-	public void setFistName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName.toUpperCase();
 	}
 
