@@ -31,10 +31,10 @@ public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
-	
+
 	@Column
 	private String email;
-	
+
 	@Column
 	private String password;
 	
@@ -46,20 +46,20 @@ public class User implements UserDetails{
 	
 	@Column(name = "create_at")
 	private LocalDateTime createdAt = LocalDateTime.now();
-	
+
 	@Column
 	private boolean locked = false;
-	
+
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.PENDING;
-	
+
 	@OneToMany(mappedBy = "user")
-	private Set<Prefix> prefixes = new HashSet<>(); 
-	
+	private Set<Prefix> prefixes = new HashSet<>();
+
 	public User() {}
 
 	public User(SignupDTO signup) {
-		this.email = signup.getEmail();	
+		this.email = signup.getEmail();
 		this.password = signup.getPassword();
 		this.firstName = signup.getFirstName();
 		this.lastName = signup.getLastName();
@@ -79,8 +79,9 @@ public class User implements UserDetails{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}		
+	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -138,21 +139,22 @@ public class User implements UserDetails{
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {		
-		return new ArrayList<>();		
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<>();
 	}
 
 	@Override
 	public String getUsername() {
 		return getEmail();
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return !isLocked();
 	}
-	
-	public boolean isEnabled() {		
+
+	@Override
+	public boolean isEnabled() {
 		return this.status == UserStatus.ACTIVE;
 	}
 }

@@ -16,14 +16,14 @@ public class Link {
 
 	@Id
 	private String id;
-	
+
 	@Column
 	private String destination;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "prefix_id")
 	private Prefix prefix;
-	
+
 	public Link() {}
 
 	public Link(@Valid LinkDTO linkDTO) {
@@ -54,6 +54,6 @@ public class Link {
 
 	public void setPrefix(Prefix prefix) {
 		this.prefix = prefix;
-	}	
-	
+	}
+
 }

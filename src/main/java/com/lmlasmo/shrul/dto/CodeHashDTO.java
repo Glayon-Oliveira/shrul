@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CodeHashDTO {
 
-	@JsonProperty	
+	@JsonProperty
 	private String hash;
-	
+
 	public CodeHashDTO(String hash) {
 		this.hash = hash;
 	}
@@ -17,6 +17,6 @@ public class CodeHashDTO {
 
 	public void setHash(String hash) {
 		this.hash = hash;
-	}	
-	
+	}
+
 }
