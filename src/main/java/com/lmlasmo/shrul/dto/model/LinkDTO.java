@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto;
+package com.lmlasmo.shrul.dto.model;
 
 import java.math.BigInteger;
 

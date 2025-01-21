@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto;
+package com.lmlasmo.shrul.dto.model;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -49,11 +49,11 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public String getFistName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFistName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.LinkDTO;
+import com.lmlasmo.shrul.dto.model.LinkDTO;
 import com.lmlasmo.shrul.model.Link;
 import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.util.LinkCodeCreator;

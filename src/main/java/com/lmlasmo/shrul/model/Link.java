@@ -1,6 +1,6 @@
 package com.lmlasmo.shrul.model;
 
-import com.lmlasmo.shrul.dto.LinkDTO;
+import com.lmlasmo.shrul.dto.model.LinkDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
