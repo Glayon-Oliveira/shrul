@@ -22,7 +22,7 @@ public class RedirectController {
 	@GetMapping("/{id}")
 	public Object redirect(@PathVariable String id){
 
-		String destine = service.getDestine(id);
+		String destine = service.getDestine(id.toLowerCase());
 
 		return (destine != null) ? new RedirectView(destine) : ResponseEntity.notFound().build();
 	}
@@ -30,7 +30,7 @@ public class RedirectController {
 	@GetMapping("/{prefix}/{id}")
 	public Object redirect(@PathVariable String id, @PathVariable String prefix){
 
-		String destine = service.getDestine(id, prefix);
+		String destine = service.getDestine(id.toLowerCase(), prefix.toLowerCase());
 
 		return (destine != null) ? new RedirectView(destine) : ResponseEntity.notFound().build();
 	}
