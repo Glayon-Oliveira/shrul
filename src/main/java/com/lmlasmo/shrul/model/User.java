@@ -51,7 +51,7 @@ public class User implements UserDetails{
 	private boolean locked = false;
 
 	@Enumerated(EnumType.STRING)
-	private UserStatus status = UserStatus.PENDING;
+	private UserStatus status = UserStatus.ACTIVE;
 
 	@OneToMany(mappedBy = "user")
 	private Set<Prefix> prefixes = new HashSet<>();
