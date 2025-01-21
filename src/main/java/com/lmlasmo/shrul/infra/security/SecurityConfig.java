@@ -28,7 +28,7 @@ public class SecurityConfig {
 				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .formLogin(f -> f.disable())
 				   .httpBasic(Customizer.withDefaults())				   
-				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup").permitAll()
+				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup", "/user/send_code").permitAll()
 						   .requestMatchers("/user/**", "/prefix/**", "/link/**").authenticated()
 						   .anyRequest().permitAll())
 				   .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
