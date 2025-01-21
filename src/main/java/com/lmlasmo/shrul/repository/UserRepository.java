@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.lmlasmo.shrul.model.User;
 
 public interface UserRepository extends JpaRepository<User, BigInteger>{
-	
+
 	public Optional<User> findByEmail(String email);
 
 	public boolean existsByEmail(String email);

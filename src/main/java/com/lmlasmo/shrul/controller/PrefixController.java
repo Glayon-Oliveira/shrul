@@ -28,52 +28,52 @@ import jakarta.validation.Valid;
 public class PrefixController {
 
 	private PrefixService service;
-	
+
 	@Autowired
 	public PrefixController(PrefixService service) {
 		this.service = service;
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<PrefixDTO> register(@RequestBody @Valid PrefixDTO prefix){
-		
+
 		prefix = service.save(prefix);
-				
-		return ResponseEntity.ok(prefix);				
+
+		return ResponseEntity.ok(prefix);
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<PrefixDTO> update(@RequestBody @Valid PrefixUpdateDTO update){
-		
+
 		PrefixDTO prefix = service.update(update);
-		
+
 		if(prefix != null) {
 			return ResponseEntity.ok(prefix);
 		}
-		
+
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@DeleteMapping
 	public ResponseEntity<Object> delete(@RequestParam BigInteger id){
-		
+
 		boolean deleted = service.delete(id);
-		
+
 		if(deleted) {
 			return ResponseEntity.ok().build();
 		}
-		
+
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<Page<PrefixDTO>> findById(Pageable pageable){
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		Page<PrefixDTO> prefixPage = service.findByUser(user.getId(), pageable);
-		
-		return ResponseEntity.ok(prefixPage);		
+
+		return ResponseEntity.ok(prefixPage);
 	}
-	
+
 }

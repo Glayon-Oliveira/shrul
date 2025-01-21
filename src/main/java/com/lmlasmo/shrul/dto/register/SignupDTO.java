@@ -5,19 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class SignupDTO extends LoginDTO{	
-	
-	@JsonProperty("fist_name")	
+public class SignupDTO extends LoginDTO{
+
+	@JsonProperty("fist_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	public String fistName;
-	
+
 	@JsonProperty("last_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
-	public String lastName;	
-	
-	public SignupDTO() {}	
+	public String lastName;
+
+	public SignupDTO() {}
 
 	public String getFistName() {
 		return fistName;
@@ -33,6 +33,6 @@ public class SignupDTO extends LoginDTO{
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName.toUpperCase();
-	}	
-	
+	}
+
 }

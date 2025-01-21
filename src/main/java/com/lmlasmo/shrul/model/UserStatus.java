@@ -6,5 +6,5 @@ public enum UserStatus {
 	DEACTIVED,
 	PENDING,
 	SUSPENDED
-	
+
 }

@@ -23,26 +23,26 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
-		
+
 		return http.csrf(c -> c.disable())
 				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .formLogin(f -> f.disable())
-				   .httpBasic(Customizer.withDefaults())				   
+				   .httpBasic(Customizer.withDefaults())
 				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup", "/user/send_code").permitAll()
 						   .requestMatchers("/user/**", "/prefix/**", "/link/**").authenticated()
 						   .anyRequest().permitAll())
 				   .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
-				   .build();		
+				   .build();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConf) throws Exception {
 		return authenticationConf.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 }

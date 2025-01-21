@@ -23,7 +23,7 @@ public class UserService {
 
 	@Autowired
 	public UserService(UserRepository repository) {
-		this.repository = repository;		
+		this.repository = repository;
 	}
 
 	public UserDTO save(SignupDTO signup) {
@@ -43,7 +43,7 @@ public class UserService {
 		Optional<User> userOp = repository.findById(update.getId());
 
 		if (userOp.isPresent()) {
-			
+
 			User user = userOp.get();
 
 			if (update.getFistName() == null && update.getLastName() == null) {
@@ -51,7 +51,7 @@ public class UserService {
 			}
 
 			boolean fistName = update.getFistName() != null && !user.getFistName().equalsIgnoreCase(update.getFistName());
-			boolean lastName = update.getLastName() != null && !user.getLastName().equalsIgnoreCase(update.getLastName());						
+			boolean lastName = update.getLastName() != null && !user.getLastName().equalsIgnoreCase(update.getLastName());
 
 			if (fistName) {
 				user.setFistName(update.getFistName());

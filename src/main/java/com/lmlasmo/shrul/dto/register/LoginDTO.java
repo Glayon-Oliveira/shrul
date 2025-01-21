@@ -6,14 +6,14 @@ import com.lmlasmo.shrul.dto.EmailDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class LoginDTO extends EmailDTO{	
-	
+public class LoginDTO extends EmailDTO{
+
 	@JsonProperty
 	@NotBlank
 	@Size(min = 8, max = 255)
 	private String password;
-	
-	public LoginDTO() {}	
+
+	public LoginDTO() {}
 
 	public String getPassword() {
 		return password;
@@ -21,6 +21,6 @@ public class LoginDTO extends EmailDTO{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}	
-	
+	}
+
 }

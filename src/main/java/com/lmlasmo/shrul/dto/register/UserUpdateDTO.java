@@ -8,20 +8,20 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UserUpdateDTO {
-	
-	@JsonProperty(required = false)	
-	private BigInteger id;	
-	
+
+	@JsonProperty(required = false)
+	private BigInteger id;
+
 	@JsonProperty(value = "fist_name", required = false)
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String fistName;
-	
+
 	@JsonProperty(value = "last_name", required = false)
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
-	
+
 	public UserUpdateDTO(){}
 
 	public BigInteger getId() {
@@ -47,5 +47,5 @@ public class UserUpdateDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName.toUpperCase();
 	}
-	
+
 }

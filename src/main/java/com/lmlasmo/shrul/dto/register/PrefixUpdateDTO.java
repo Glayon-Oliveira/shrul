@@ -14,11 +14,11 @@ public class PrefixUpdateDTO {
 	@NotNull
 	@Min(1)
 	private BigInteger id;
-	
-	@JsonProperty	
+
+	@JsonProperty
 	@Pattern(regexp = "^[A-Za-z]+$")
-	private String prefix;	
-	
+	private String prefix;
+
 	public PrefixUpdateDTO() {}
 
 	public BigInteger getId() {
@@ -36,5 +36,5 @@ public class PrefixUpdateDTO {
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
-	
+
 }
