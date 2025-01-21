@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.UserDTO;
+import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.model.User;

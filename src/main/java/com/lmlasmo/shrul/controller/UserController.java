@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lmlasmo.shrul.dto.CodeHashDTO;
 import com.lmlasmo.shrul.dto.EmailDTO;
 import com.lmlasmo.shrul.dto.JwtTokenDTO;
-import com.lmlasmo.shrul.dto.UserDTO;
+import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
 import com.lmlasmo.shrul.dto.register.SignupWithCodeHashDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;

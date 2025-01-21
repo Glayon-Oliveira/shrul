@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.PrefixDTO;
+import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.PrefixRepository;

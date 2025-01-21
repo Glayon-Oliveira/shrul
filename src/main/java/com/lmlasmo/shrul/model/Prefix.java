@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.lmlasmo.shrul.dto.PrefixDTO;
+import com.lmlasmo.shrul.dto.model.PrefixDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
