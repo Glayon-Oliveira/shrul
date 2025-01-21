@@ -41,7 +41,7 @@ public class LinkService {
 			String destine = link.getDestination();
 			String now = LocalDateTime.now().toString();			
 			
-			id = LinkCodeCreator.create(prefixId, destine, now);
+			id = LinkCodeCreator.create(prefixId, destine, now).toLowerCase();
 
 		}while(repository.existsById(id));
 

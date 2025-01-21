@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -130,12 +128,6 @@ public class UserController{
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		return ResponseEntity.ok(new UserDTO(user));
-	}
-
-	@GetMapping("/search")
-	public Page<UserDTO> findAll(Pageable pageable){
-		return userService.getRepository().findAll(pageable)
-				.map(u -> new UserDTO(u));
 	}
 
 }

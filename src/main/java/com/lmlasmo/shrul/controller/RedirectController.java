@@ -21,17 +21,17 @@ public class RedirectController {
 
 	@GetMapping("/{id}")
 	public Object redirect(@PathVariable String id){
-		
-		String destine = service.getDestination(id);		
-	
+
+		String destine = service.getDestination(id.toLowerCase());
+
 		return (destine != null) ? new RedirectView(destine) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/{prefix}/{id}")
 	public Object redirect(@PathVariable String id, @PathVariable String prefix){
-		
-		String destine = service.getDestination(id, prefix);
-		
+
+		String destine = service.getDestination(id.toLowerCase(), prefix.toLowerCase());
+
 		return (destine != null) ? new RedirectView(destine) : ResponseEntity.notFound().build();
 	}
 
