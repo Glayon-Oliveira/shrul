@@ -2,6 +2,7 @@ package com.lmlasmo.shrul.controller;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lmlasmo.shrul.dto.CodeHashDTO;
+import com.lmlasmo.shrul.dto.EmailDTO;
 import com.lmlasmo.shrul.dto.JwtTokenDTO;
 import com.lmlasmo.shrul.dto.UserDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
-import com.lmlasmo.shrul.dto.register.SignupDTO;
+import com.lmlasmo.shrul.dto.register.SignupWithCodeHashDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.model.User;
+import com.lmlasmo.shrul.service.EmailService;
 import com.lmlasmo.shrul.service.JwtService;
 import com.lmlasmo.shrul.service.UserService;
+import com.lmlasmo.shrul.util.EmailCodeTool;
 
 import jakarta.validation.Valid;
 
@@ -35,11 +40,13 @@ public class UserController{
 
 	private UserService userService;
 	private JwtService jwtService;
+	private EmailService emailService;
 	private AuthenticationManager manager;	
 	
-	public UserController(UserService userService, JwtService jwtService, AuthenticationManager manager) {
+	public UserController(UserService userService, JwtService jwtService, EmailService emailService, AuthenticationManager manager) {
 		this.userService = userService;		
 		this.jwtService = jwtService;
+		this.emailService = emailService;
 		this.manager = manager;
 	}
 	
@@ -58,7 +65,14 @@ public class UserController{
 	}
 		
 	@PostMapping("/signup")	
-	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupDTO signup){
+	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupWithCodeHashDTO signup){
+		
+		String code = signup.getCode();
+		String hash = signup.getHash();
+		
+		if(!EmailCodeTool.confirm(signup.getEmail(), code, hash)) {
+			return ResponseEntity.badRequest().build();
+		}
 		
 		UserDTO user = userService.save(signup);
 		
@@ -67,6 +81,25 @@ public class UserController{
 		}
 				
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@PostMapping("/send_code")
+	public ResponseEntity<CodeHashDTO> sendCode(@RequestBody @Valid EmailDTO emailDTO){
+		
+		String email = emailDTO.getEmail();				
+		
+		if(userService.getRepository().existsByEmail(email)) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		Map<String,String> codeHash = EmailCodeTool.create(email);
+		
+		String code = codeHash.get("code");
+		String hash = codeHash.get("hash");
+		
+		emailService.send(email, "Confirmar Conta", code);
+		
+		return ResponseEntity.ok(new CodeHashDTO(hash));
 	}
 	
 	@PutMapping
