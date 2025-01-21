@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.lmlasmo.shrul.dto.register.SignupDTO;
@@ -52,6 +54,9 @@ public class User implements UserDetails{
 
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ACTIVE;
+	
+	@Enumerated(EnumType.STRING)
+	private UserRole role = UserRole.ROLE_USER;
 
 	@OneToMany(mappedBy = "user")
 	private Set<Prefix> prefixes = new HashSet<>();
@@ -128,6 +133,14 @@ public class User implements UserDetails{
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}	
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 	public Set<Prefix> getPrefixes() {
@@ -140,7 +153,10 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>();
+		
+		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.role.name());
+		
+		return List.of(authority);
 	}
 
 	@Override
