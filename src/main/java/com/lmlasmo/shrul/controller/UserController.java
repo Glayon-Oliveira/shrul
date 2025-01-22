@@ -24,6 +24,7 @@ import com.lmlasmo.shrul.dto.EmailDTO;
 import com.lmlasmo.shrul.dto.JwtTokenDTO;
 import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
+import com.lmlasmo.shrul.dto.register.PasswordUpdateWithCodeHashDTO;
 import com.lmlasmo.shrul.dto.register.SignupWithCodeHashDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.model.User;
@@ -88,11 +89,7 @@ public class UserController{
 	@PostMapping("/send_code")
 	public ResponseEntity<CodeHashDTO> sendCode(@RequestBody @Valid EmailDTO emailDTO){
 
-		String email = emailDTO.getEmail();
-
-		if(userService.getRepository().existsByEmail(email)) {
-			return ResponseEntity.badRequest().build();
-		}
+		String email = emailDTO.getEmail();		
 
 		Map<String,String> codeHash = EmailCodeTool.create(email);
 
@@ -114,6 +111,20 @@ public class UserController{
 		}
 
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@PutMapping("/password")
+	public ResponseEntity<UserDTO> updatePassword(@RequestBody @Valid PasswordUpdateWithCodeHashDTO update){
+		
+		boolean confirmed = EmailCodeTool.confirm(update.getEmail(), update.getCode(), update.getHash());
+		
+		if(!confirmed) {
+			return ResponseEntity.status(403).build();
+		}		
+		
+		UserDTO user = userService.updatePassword(update.getEmail(), update.getPassword());
+		
+		return ResponseEntity.ok(user);						
 	}
 
 	@PutMapping("/lock")
