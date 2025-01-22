@@ -30,8 +30,8 @@ public class PrefixService {
 
 	public PrefixDTO save(PrefixDTO prefixDTO, BigInteger userId) {
 
-		if(prefixDTO.getPrefix() == null && repository.existsByUserIdAndPrefixIsNull(userId)) {
-			throw new EntityExistsException("Null prefix field exists");
+		if(repository.existsByPrefix(prefixDTO.getPrefix())) {
+			throw new EntityExistsException("Prefix exists");
 		}
 
 		Prefix prefix = new Prefix(prefixDTO, userId);
@@ -44,23 +44,25 @@ public class PrefixService {
 
 		Optional<Prefix> prefixOp = repository.findById(update.getId());
 
-		if(prefixOp.isPresent()) {
-
-			Prefix prefix = prefixOp.get();
-
-			if(!repository.existsByPrefix(update.getPrefix())) {
-
-				prefix.setPrefix(update.getPrefix());
-
-				prefix = repository.save(prefix);
-
-				return new PrefixDTO(prefix);
-			}
-
-			throw new EntityExistsException("Prefix exists");
+		if(!prefixOp.isPresent()) {			
+			throw new EntityNotFoundException("Prefix not found");
 		}
 
-		throw new EntityNotFoundException("Prefix not found");
+		Prefix prefix = prefixOp.get();
+		
+		if(prefix.getPrefix() == null) {
+			throw new NullPointerException("Empty prefix cannot be updated"); 
+		}
+
+		if(!repository.existsByPrefix(update.getPrefix())) {
+
+			prefix.setPrefix(update.getPrefix());
+			prefix = repository.save(prefix);
+
+			return new PrefixDTO(prefix);
+		}
+
+		throw new EntityExistsException("Prefix exists");
 	}
 
 	public boolean delete(BigInteger id) {
@@ -69,7 +71,7 @@ public class PrefixService {
 			return false;
 		}
 
-		repository.deleteById(id);
+		repository.deleteByIdAndPrefixIsNotNull(id);
 
 		return !repository.existsById(id);
 	}
@@ -77,6 +79,11 @@ public class PrefixService {
 	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {
 
 		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
+	}
+
+	public PrefixDTO findByEmptyPrefix(BigInteger userId) {
+		
+		return repository.findByUserIdAndPrefixIsNull(userId);
 	}
 
 }

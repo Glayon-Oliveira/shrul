@@ -67,6 +67,14 @@ public class PrefixController {
 
 		return ResponseEntity.badRequest().build();
 	}
+	
+	@GetMapping("/empty")
+	public ResponseEntity<PrefixDTO> findEmptyPrefix(){
+		
+		PrefixDTO prefix = service.findByEmptyPrefix(AccessVerifyService.getUserId());
+		
+		return ResponseEntity.ok(prefix);
+	}
 
 	@GetMapping
 	public ResponseEntity<Page<PrefixDTO>> findPrefixes(Pageable pageable){
