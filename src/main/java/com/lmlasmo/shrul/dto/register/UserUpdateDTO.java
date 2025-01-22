@@ -1,17 +1,12 @@
 package com.lmlasmo.shrul.dto.register;
 
-import java.math.BigInteger;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class UserUpdateDTO {
-	
-	@JsonProperty(required = false)	
-	private BigInteger id;	
-	
+public class UserUpdateDTO {	
+
 	@JsonProperty(value = "first_name", required = false)
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
@@ -22,15 +17,7 @@ public class UserUpdateDTO {
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
 
-	public UserUpdateDTO(){}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
+	public UserUpdateDTO(){}	
 
 	public String getFirstName() {
 		return firstName;

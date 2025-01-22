@@ -41,9 +41,9 @@ public class UserService {
 		return null;
 	}
 
-	public UserDTO update(UserUpdateDTO update) {
+	public UserDTO update(UserUpdateDTO update, BigInteger id) {
 
-		Optional<User> userOp = repository.findById(update.getId());
+		Optional<User> userOp = repository.findById(id);
 
 		if (userOp.isPresent()) {
 

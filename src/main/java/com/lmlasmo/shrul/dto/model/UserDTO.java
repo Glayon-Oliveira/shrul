@@ -1,15 +1,11 @@
 package com.lmlasmo.shrul.dto.model;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.model.User;
 
 public class UserDTO {
-
-	@JsonProperty
-	private BigInteger id;
 
 	@JsonProperty
 	private String email;
@@ -25,20 +21,11 @@ public class UserDTO {
 
 	public UserDTO() {}
 
-	public UserDTO(User user) {
-		this.id = user.getId();
+	public UserDTO(User user) {		
 		this.email = user.getEmail();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.createdAt = user.getCreatedAt();
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
