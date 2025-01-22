@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
 import com.lmlasmo.shrul.service.LinkService;
+import com.lmlasmo.shrul.service.VerifyAccessService;
 
 import jakarta.validation.Valid;
 
@@ -48,8 +49,16 @@ public class LinkController {
 
 		return (deleted) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 	}
-
+	
 	@GetMapping
+	public ResponseEntity<Page<LinkDTO>> findByUser(Pageable pageable){
+		
+		Page<LinkDTO> linkPage = service.findByUser(VerifyAccessService.getUserId(), pageable);
+		
+		return ResponseEntity.ok(linkPage);
+	}
+
+	@GetMapping(params = "prefix")
 	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#id)")
 	public ResponseEntity<Page<LinkDTO>> findByPrefix(@RequestParam("prefix") BigInteger id, Pageable pageable){
 
