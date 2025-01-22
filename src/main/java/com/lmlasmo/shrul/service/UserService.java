@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class UserService {
 
 	private UserRepository repository;
+	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
 	public UserService(UserRepository repository) {
@@ -31,6 +33,7 @@ public class UserService {
 		if (!repository.existsByEmail(signup.getEmail())) {
 
 			User user = new User(signup);
+			user.setPassword(encoder.encode(signup.getPassword()));
 
 			return new UserDTO(repository.save(user));
 		}

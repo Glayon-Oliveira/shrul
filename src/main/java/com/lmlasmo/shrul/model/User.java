@@ -2,7 +2,6 @@ package com.lmlasmo.shrul.model;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +63,7 @@ public class User implements UserDetails{
 	public User() {}
 
 	public User(SignupDTO signup) {
-		this.email = signup.getEmail();
-		this.password = signup.getPassword();
+		this.email = signup.getEmail();		
 		this.firstName = signup.getFirstName();
 		this.lastName = signup.getLastName();
 	}
