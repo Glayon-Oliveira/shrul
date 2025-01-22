@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,7 +58,7 @@ public class User implements UserDetails{
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.ROLE_USER;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Set<Prefix> prefixes = new HashSet<>();
 
 	public User() {}
