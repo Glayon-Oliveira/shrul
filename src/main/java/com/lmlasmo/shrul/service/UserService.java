@@ -75,6 +75,32 @@ public class UserService {
 
 		throw new EntityNotFoundException("User not exist");
 	}
+	
+	public UserDTO updatePassword(BigInteger userId, String password) {
+		
+		Optional<User> userOp = repository.findById(userId);		
+		
+		return updatePassword(userOp, password);
+	}
+	
+	public UserDTO updatePassword(String email, String password) {
+		
+		Optional<User> userOp = repository.findByEmail(email);		
+		
+		return updatePassword(userOp, password);
+	}
+	
+	private UserDTO updatePassword(Optional<User> userOp, String password) {		
+		
+		if(userOp.isEmpty()) {
+			throw new EntityNotFoundException("User not exist");
+		}
+		
+		User user = userOp.get();			
+		user.setPassword(encoder.encode(password));		
+		
+		return new UserDTO(repository.save(user));
+	}
 
 	public void setLocked(BigInteger id, boolean locked) {
 
