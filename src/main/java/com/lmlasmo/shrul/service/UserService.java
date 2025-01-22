@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
+import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.UserRepository;
 
@@ -34,6 +35,11 @@ public class UserService {
 
 			User user = new User(signup);
 			user.setPassword(encoder.encode(signup.getPassword()));
+			
+			Prefix prefix = new Prefix();
+			prefix.setUser(user);
+			
+			user.getPrefixes().add(prefix);
 
 			return new UserDTO(repository.save(user));
 		}

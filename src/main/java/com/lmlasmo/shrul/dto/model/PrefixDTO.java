@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.model.Prefix;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public class PrefixDTO {
@@ -14,8 +15,9 @@ public class PrefixDTO {
 	@Min(1)
 	private BigInteger id;
 
-	@JsonProperty(required = false)
-	@Pattern(regexp = "^[a-z]+$")
+	@JsonProperty
+	@NotBlank
+	@Pattern(regexp = "^[a-z]+$")	
 	private String prefix;	
 
 	public PrefixDTO() {}
