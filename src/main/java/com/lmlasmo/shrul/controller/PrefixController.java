@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
-import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.PrefixService;
+import com.lmlasmo.shrul.service.VerifyAccessService;
 
 import jakarta.validation.Valid;
 
@@ -37,12 +37,13 @@ public class PrefixController {
 	@PostMapping
 	public ResponseEntity<PrefixDTO> register(@RequestBody @Valid PrefixDTO prefix){
 
-		prefix = service.save(prefix);
+		prefix = service.save(prefix, VerifyAccessService.getUserId());
 
 		return ResponseEntity.ok(prefix);
 	}
 
 	@PutMapping
+	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#update.id)")
 	public ResponseEntity<PrefixDTO> update(@RequestBody @Valid PrefixUpdateDTO update){
 
 		PrefixDTO prefix = service.update(update);
@@ -55,6 +56,7 @@ public class PrefixController {
 	}
 
 	@DeleteMapping
+	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#id)")
 	public ResponseEntity<Object> delete(@RequestParam BigInteger id){
 
 		boolean deleted = service.delete(id);
@@ -67,11 +69,9 @@ public class PrefixController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<PrefixDTO>> findById(Pageable pageable){
+	public ResponseEntity<Page<PrefixDTO>> findPrefixes(Pageable pageable){
 
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		Page<PrefixDTO> prefixPage = service.findByUser(user.getId(), pageable);
+		Page<PrefixDTO> prefixPage = service.findByUser(VerifyAccessService.getUserId(), pageable);
 
 		return ResponseEntity.ok(prefixPage);
 	}
