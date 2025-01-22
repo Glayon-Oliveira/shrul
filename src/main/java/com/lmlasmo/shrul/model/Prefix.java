@@ -37,10 +37,10 @@ public class Prefix {
 
 	public Prefix() {}
 
-	public Prefix(PrefixDTO prefixDTO) {
+	public Prefix(PrefixDTO prefixDTO, BigInteger userId) {
 		this.prefix = prefixDTO.getPrefix();
 		this.user = new User();
-		this.user.setId(prefixDTO.getUser());
+		this.user.setId(userId);
 	}
 
 	public BigInteger getId() {

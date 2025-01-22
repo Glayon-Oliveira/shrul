@@ -28,13 +28,13 @@ public class PrefixService {
 		this.repository = repository;
 	}
 
-	public PrefixDTO save(PrefixDTO prefixDTO) {
+	public PrefixDTO save(PrefixDTO prefixDTO, BigInteger userId) {
 
-		if(prefixDTO.getPrefix() == null && repository.existsByUserIdAndPrefixIsNull(prefixDTO.getUser())) {
+		if(prefixDTO.getPrefix() == null && repository.existsByUserIdAndPrefixIsNull(userId)) {
 			throw new EntityExistsException("Null prefix field exists");
 		}
 
-		Prefix prefix = new Prefix(prefixDTO);
+		Prefix prefix = new Prefix(prefixDTO, userId);
 		prefix = repository.save(prefix);
 
 		return new PrefixDTO(prefix);

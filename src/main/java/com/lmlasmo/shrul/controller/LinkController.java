@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class LinkController {
 	}
 
 	@PostMapping
+	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#link.prefix)")
 	public ResponseEntity<LinkDTO> register(@RequestBody @Valid LinkDTO link){
 
 		LinkDTO dto = service.save(link);
@@ -39,6 +41,7 @@ public class LinkController {
 	}
 
 	@DeleteMapping
+	@PreAuthorize("@verifyAccessService.verifyAccessLink(#id)")
 	public ResponseEntity<Object> delete(@RequestParam String id){
 
 		boolean deleted = service.delete(id.toLowerCase());
@@ -47,6 +50,7 @@ public class LinkController {
 	}
 
 	@GetMapping
+	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#id)")
 	public ResponseEntity<Page<LinkDTO>> findByPrefix(@RequestParam("prefix") BigInteger id, Pageable pageable){
 
 		Page<LinkDTO> linkPage = service.findByPrefix(id, pageable);

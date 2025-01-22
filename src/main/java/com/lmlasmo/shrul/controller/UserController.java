@@ -30,6 +30,7 @@ import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.EmailService;
 import com.lmlasmo.shrul.service.JwtService;
 import com.lmlasmo.shrul.service.UserService;
+import com.lmlasmo.shrul.service.VerifyAccessService;
 import com.lmlasmo.shrul.util.EmailCodeTool;
 
 import jakarta.validation.Valid;
@@ -106,7 +107,7 @@ public class UserController{
 	@PutMapping
 	public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO update){
 
-		UserDTO user = userService.update(update);
+		UserDTO user = userService.update(update, VerifyAccessService.getUserId());
 
 		if(user != null) {
 			return ResponseEntity.ok(user);

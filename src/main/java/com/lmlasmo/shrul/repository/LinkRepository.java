@@ -14,4 +14,6 @@ public interface LinkRepository extends JpaRepository<Link, String>{
 
 	public Link findByIdAndPrefixPrefix(String id, String prefix);
 
+	public boolean existsByIdAndPrefixUserId(String id, BigInteger userId);
+
 }
