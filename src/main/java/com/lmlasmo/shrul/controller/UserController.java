@@ -114,7 +114,7 @@ public class UserController{
 		return ResponseEntity.badRequest().build();
 	}
 
-	@PutMapping("/lock")
+	@PutMapping("/lock")	
 	public ResponseEntity<Object> setLocked(@RequestParam BigInteger id, @RequestParam boolean locked){
 
 		userService.setLocked(id, locked);
