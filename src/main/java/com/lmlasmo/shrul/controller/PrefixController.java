@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
 import com.lmlasmo.shrul.service.PrefixService;
-import com.lmlasmo.shrul.service.VerifyAccessService;
+import com.lmlasmo.shrul.service.AccessVerifyService;
 
 import jakarta.validation.Valid;
 
@@ -37,13 +37,13 @@ public class PrefixController {
 	@PostMapping
 	public ResponseEntity<PrefixDTO> register(@RequestBody @Valid PrefixDTO prefix){
 
-		prefix = service.save(prefix, VerifyAccessService.getUserId());
+		prefix = service.save(prefix, AccessVerifyService.getUserId());
 
 		return ResponseEntity.ok(prefix);
 	}
 
 	@PutMapping
-	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#update.id)")
+	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#update.id)")
 	public ResponseEntity<PrefixDTO> update(@RequestBody @Valid PrefixUpdateDTO update){
 
 		PrefixDTO prefix = service.update(update);
@@ -56,7 +56,7 @@ public class PrefixController {
 	}
 
 	@DeleteMapping
-	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#id)")
+	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
 	public ResponseEntity<Object> delete(@RequestParam BigInteger id){
 
 		boolean deleted = service.delete(id);
@@ -71,7 +71,7 @@ public class PrefixController {
 	@GetMapping
 	public ResponseEntity<Page<PrefixDTO>> findPrefixes(Pageable pageable){
 
-		Page<PrefixDTO> prefixPage = service.findByUser(VerifyAccessService.getUserId(), pageable);
+		Page<PrefixDTO> prefixPage = service.findByUser(AccessVerifyService.getUserId(), pageable);
 
 		return ResponseEntity.ok(prefixPage);
 	}

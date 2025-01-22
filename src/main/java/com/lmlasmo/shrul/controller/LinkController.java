@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
 import com.lmlasmo.shrul.service.LinkService;
-import com.lmlasmo.shrul.service.VerifyAccessService;
+import com.lmlasmo.shrul.service.AccessVerifyService;
 
 import jakarta.validation.Valid;
 
@@ -33,7 +33,7 @@ public class LinkController {
 	}
 
 	@PostMapping
-	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#link.prefix)")
+	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#link.prefix)")
 	public ResponseEntity<LinkDTO> register(@RequestBody @Valid LinkDTO link){
 
 		LinkDTO dto = service.save(link);
@@ -42,7 +42,7 @@ public class LinkController {
 	}
 
 	@DeleteMapping
-	@PreAuthorize("@verifyAccessService.verifyAccessLink(#id)")
+	@PreAuthorize("@accessVerifyService.verifyLinkAccess(#id)")
 	public ResponseEntity<Object> delete(@RequestParam String id){
 
 		boolean deleted = service.delete(id.toLowerCase());
@@ -53,13 +53,13 @@ public class LinkController {
 	@GetMapping
 	public ResponseEntity<Page<LinkDTO>> findByUser(Pageable pageable){
 		
-		Page<LinkDTO> linkPage = service.findByUser(VerifyAccessService.getUserId(), pageable);
+		Page<LinkDTO> linkPage = service.findByUser(AccessVerifyService.getUserId(), pageable);
 		
 		return ResponseEntity.ok(linkPage);
 	}
 
 	@GetMapping(params = "prefix")
-	@PreAuthorize("@verifyAccessService.verifyAccessPrefix(#id)")
+	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
 	public ResponseEntity<Page<LinkDTO>> findByPrefix(@RequestParam("prefix") BigInteger id, Pageable pageable){
 
 		Page<LinkDTO> linkPage = service.findByPrefix(id, pageable);
