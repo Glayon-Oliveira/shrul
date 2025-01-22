@@ -71,6 +71,11 @@ public class LinkService {
 
 		return null;
 	}
+	
+	public Page<LinkDTO> findByUser(BigInteger userId, Pageable pageable) {
+
+		return repository.findByPrefixUserId(userId, pageable).map(l -> new LinkDTO(l));
+	}
 
 	public Page<LinkDTO> findByPrefix(BigInteger id, Pageable pageable) {
 
@@ -89,6 +94,6 @@ public class LinkService {
 		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
 
 		return (link != null) ? link.getDestine() : null;
-	}
+	}	
 
 }
