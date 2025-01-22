@@ -11,13 +11,13 @@ import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
 @Service
-public class VerifyAccessService {
+public class AccessVerifyService {
 		
 	private PrefixRepository prefixRepository;	
 	private LinkRepository linkRepository;
 	
 	@Autowired
-	public VerifyAccessService(PrefixRepository prefixRepository, LinkRepository linkRepository) {		
+	public AccessVerifyService(PrefixRepository prefixRepository, LinkRepository linkRepository) {		
 		this.prefixRepository = prefixRepository;		
 		this.linkRepository = linkRepository;
 	}
@@ -33,14 +33,14 @@ public class VerifyAccessService {
 				
 	}	
 	
-	public boolean verifyAccessPrefix(BigInteger id) {
+	public boolean verifyPrefixAccess(BigInteger id) {
 		
 		BigInteger userId = getUserId();
 		
 		return prefixRepository.existsByIdAndUserId(id, userId);
 	}	 
 	
-	public boolean verifyAccessLink(String id) {
+	public boolean verifyLinkAccess(String id) {
 		
 		BigInteger userId = getUserId();
 				
