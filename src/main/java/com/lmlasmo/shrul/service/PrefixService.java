@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
+import com.lmlasmo.shrul.infra.erro.GenericException;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
@@ -31,7 +32,7 @@ public class PrefixService {
 	public PrefixDTO save(PrefixDTO prefixDTO, BigInteger userId) {
 
 		if(repository.existsByPrefix(prefixDTO.getPrefix())) {
-			throw new EntityExistsException("Prefix exists");
+			throw new EntityExistsException("Prefix used");
 		}
 
 		Prefix prefix = new Prefix(prefixDTO, userId);
@@ -51,38 +52,38 @@ public class PrefixService {
 		Prefix prefix = prefixOp.get();
 		
 		if(prefix.getPrefix() == null) {
-			throw new NullPointerException("Empty prefix cannot be updated"); 
+			throw new GenericException("Empty prefix cannot be updated"); 
 		}
 
-		if(!repository.existsByPrefix(update.getPrefix())) {
-
-			prefix.setPrefix(update.getPrefix());
-			prefix = repository.save(prefix);
-
-			return new PrefixDTO(prefix);
+		if(repository.existsByPrefix(update.getPrefix())) {
+			throw new EntityExistsException("Prefix exists");
 		}
 
-		throw new EntityExistsException("Prefix exists");
+		prefix.setPrefix(update.getPrefix());
+		prefix = repository.save(prefix);
+
+		return new PrefixDTO(prefix);
 	}
 
-	public boolean delete(BigInteger id) {
+	public void delete(BigInteger id) {
 
 		if(!repository.existsById(id)) {
-			return false;
+			throw new EntityNotFoundException("Prefix not found");
 		}
 
 		repository.deleteByIdAndPrefixIsNotNull(id);
-
-		return !repository.existsById(id);
+		
+		if(repository.existsById(id)) {
+			throw new GenericException("Prefix not deleted");
+		}
+		
 	}
 
 	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {
-
 		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
 	}
 
-	public PrefixDTO findByEmptyPrefix(BigInteger userId) {
-		
+	public PrefixDTO findByEmptyPrefix(BigInteger userId) {		
 		return repository.findByUserIdAndPrefixIsNull(userId);
 	}
 

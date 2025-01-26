@@ -45,9 +45,9 @@ public class LinkController {
 	@PreAuthorize("@accessVerifyService.verifyLinkAccess(#id)")
 	public ResponseEntity<Object> delete(@RequestParam String id){
 
-		boolean deleted = service.delete(id.toLowerCase());
+		service.delete(id.toLowerCase());
 
-		return (deleted) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping

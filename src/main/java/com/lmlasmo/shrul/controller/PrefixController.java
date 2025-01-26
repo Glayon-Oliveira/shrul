@@ -47,25 +47,17 @@ public class PrefixController {
 	public ResponseEntity<PrefixDTO> update(@RequestBody @Valid PrefixUpdateDTO update){
 
 		PrefixDTO prefix = service.update(update);
-
-		if(prefix != null) {
-			return ResponseEntity.ok(prefix);
-		}
-
-		return ResponseEntity.badRequest().build();
+		
+		return ResponseEntity.ok(prefix);			
 	}
 
 	@DeleteMapping
 	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
 	public ResponseEntity<Object> delete(@RequestParam BigInteger id){
 
-		boolean deleted = service.delete(id);
+		service.delete(id);		
 
-		if(deleted) {
-			return ResponseEntity.ok().build();
-		}
-
-		return ResponseEntity.badRequest().build();
+		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/empty")

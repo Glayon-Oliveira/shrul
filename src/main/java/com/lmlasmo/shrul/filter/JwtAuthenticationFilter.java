@@ -66,7 +66,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String auth = request.getHeader("Authorization");
 
 		if(auth != null) {
-			auth = auth.replace("Bearer ", "");
+			
+			if(auth.contains("Bearer ")) {
+				auth = auth.replace("Bearer ", "");
+			}
+						
 		}
 
 		return auth;

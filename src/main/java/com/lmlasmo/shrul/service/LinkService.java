@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
+import com.lmlasmo.shrul.infra.erro.DestineNotFoundException;
+import com.lmlasmo.shrul.infra.erro.GenericException;
 import com.lmlasmo.shrul.model.Link;
 import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.util.LinkCodeCreator;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @Service
@@ -30,7 +33,7 @@ public class LinkService {
 
 	public LinkDTO save(@Valid LinkDTO linkDTO) {
 
-		Link link = new Link(linkDTO);
+		Link link = new Link(linkDTO);		
 
 		String id = "0000000000";
 
@@ -50,50 +53,58 @@ public class LinkService {
 		return new LinkDTO(link);
 	}
 
-	public boolean delete(String id) {
+	public void delete(String id) {
 
 		if(!repository.existsById(id)) {
-			return false;
+			throw new EntityNotFoundException("Link not found");
 		}
 
 		repository.deleteById(id);
 
-		return !repository.existsById(id);
+		if(repository.existsById(id)) {
+			throw new GenericException("Link not deleted");
+		}
 	}
 
 	public LinkDTO findById(String id) {
 
 		Optional<LinkDTO> link = repository.findById(id).map(l -> new LinkDTO(l));
 
-		if(link.isPresent()) {
-			return link.get();
+		if(link.isEmpty()) {
+			throw new DestineNotFoundException("Link not found");
 		}
 
-		return null;
+		return link.get();
 	}
 	
 	public Page<LinkDTO> findByUser(BigInteger userId, Pageable pageable) {
-
 		return repository.findByPrefixUserId(userId, pageable).map(l -> new LinkDTO(l));
 	}
 
 	public Page<LinkDTO> findByPrefix(BigInteger id, Pageable pageable) {
-
 		return repository.findByPrefixId(id, pageable).map(l -> new LinkDTO(l));
 	}
 
 	public String getDestine(String id) {
 
 		Optional<Link> link = repository.findById(id);
+		
+		if((link.isEmpty())) {
+			throw new DestineNotFoundException("Link not found");
+		}
 
-		return (link.isPresent()) ? link.get().getDestine() : null;
+		return link.get().getDestine();
 	}
 
 	public String getDestine(String id, String prefix) {
 
 		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
+		
+		if(link == null) {
+			throw new DestineNotFoundException("Link not found");
+		}
 
-		return (link != null) ? link.getDestine() : null;
+		return link.getDestine();
 	}	
 
 }
