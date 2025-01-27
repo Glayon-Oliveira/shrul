@@ -10,12 +10,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
+import com.lmlasmo.shrul.dto.register.LinkUpdateDTO;
 import com.lmlasmo.shrul.service.AccessVerifyService;
 import com.lmlasmo.shrul.service.LinkService;
 
@@ -39,6 +41,15 @@ public class LinkController {
 		LinkDTO dto = service.save(link);
 
 		return ResponseEntity.ok(dto);
+	}
+	
+	@PutMapping
+	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#update.prefix)")
+	public ResponseEntity<LinkDTO> update(@RequestBody @Valid LinkUpdateDTO update){
+		
+		LinkDTO link = service.update(update);
+		
+		return ResponseEntity.ok(link);
 	}
 
 	@DeleteMapping
