@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
-import com.lmlasmo.shrul.service.LinkService;
 import com.lmlasmo.shrul.service.AccessVerifyService;
+import com.lmlasmo.shrul.service.LinkService;
 
 import jakarta.validation.Valid;
 
@@ -49,12 +49,12 @@ public class LinkController {
 
 		return ResponseEntity.ok().build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<Page<LinkDTO>> findByUser(Pageable pageable){
-		
+
 		Page<LinkDTO> linkPage = service.findByUser(AccessVerifyService.getUserId(), pageable);
-		
+
 		return ResponseEntity.ok(linkPage);
 	}
 

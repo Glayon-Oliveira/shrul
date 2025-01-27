@@ -33,19 +33,19 @@ public class UserService {
 
 	public UserDTO save(SignupDTO signup) {
 
-		if (repository.existsByEmail(signup.getEmail())) {										
+		if (repository.existsByEmail(signup.getEmail())) {
 			throw new EntityExistsException("Email is not available");
 		}
-		
+
 		User user = new User(signup);
 		user.setPassword(encoder.encode(signup.getPassword()));
-		
+
 		Prefix prefix = new Prefix();
 		prefix.setUser(user);
-		
+
 		user.getPrefixes().add(prefix);
 
-		return new UserDTO(repository.save(user));		
+		return new UserDTO(repository.save(user));
 	}
 
 	public UserDTO update(UserUpdateDTO update, BigInteger id) {
@@ -55,7 +55,7 @@ public class UserService {
 		if (userOp.isEmpty()) {
 			throw new EntityNotFoundException("User not found");
 		}
-		
+
 		User user = userOp.get();
 
 		if (update.getFirstName() == null && update.getLastName() == null) {
@@ -75,35 +75,35 @@ public class UserService {
 
 		return new UserDTO(repository.save(user));
 	}
-	
+
 	public UserDTO updatePassword(BigInteger userId, String password) {
-		
-		Optional<User> userOp = repository.findById(userId);		
-		
+
+		Optional<User> userOp = repository.findById(userId);
+
 		return updatePassword(userOp, password);
 	}
-	
+
 	public UserDTO updatePassword(String email, String password) {
-		
-		Optional<User> userOp = repository.findByEmail(email);		
-		
+
+		Optional<User> userOp = repository.findByEmail(email);
+
 		return updatePassword(userOp, password);
 	}
-	
-	private UserDTO updatePassword(Optional<User> userOp, String password) {		
-		
+
+	private UserDTO updatePassword(Optional<User> userOp, String password) {
+
 		if(userOp.isEmpty()) {
 			throw new EntityNotFoundException("User not found");
 		}
-		
+
 		User user = userOp.get();
-		
+
 		if(user.getPassword().equals(password)) {
 			throw new GenericException("Password used");
 		}
-		
-		user.setPassword(encoder.encode(password));		
-		
+
+		user.setPassword(encoder.encode(password));
+
 		return new UserDTO(repository.save(user));
 	}
 
@@ -111,8 +111,8 @@ public class UserService {
 
 		Optional<User> user = repository.findById(id);
 
-		if (user.isEmpty()) {					
-			throw new EntityNotFoundException("User not found");			
+		if (user.isEmpty()) {
+			throw new EntityNotFoundException("User not found");
 		}
 
 		if(user.get().isLocked()) {
@@ -121,7 +121,7 @@ public class UserService {
 
 		user.get().setLocked(locked);
 
-		repository.save(user.get());		
+		repository.save(user.get());
 	}
 
 	public UserRepository getRepository() {

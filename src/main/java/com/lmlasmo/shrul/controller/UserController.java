@@ -27,10 +27,10 @@ import com.lmlasmo.shrul.dto.register.PasswordUpdateDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.model.User;
+import com.lmlasmo.shrul.service.AccessVerifyService;
 import com.lmlasmo.shrul.service.EmailService;
 import com.lmlasmo.shrul.service.JwtService;
 import com.lmlasmo.shrul.service.UserService;
-import com.lmlasmo.shrul.service.AccessVerifyService;
 import com.lmlasmo.shrul.util.EmailCodeTool;
 
 import jakarta.validation.Valid;
@@ -70,23 +70,23 @@ public class UserController{
 
 	@PostMapping("/signup")
 	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupDTO signup){
-		
-		CodeHashDTO codeHash = signup.getHashCode();		
+
+		CodeHashDTO codeHash = signup.getHashCode();
 		emailTool.confirm(signup.getEmail(), codeHash);
 
 		UserDTO user = userService.save(signup);
-		
+
 		return ResponseEntity.ok(user);
 	}
 
 	@PostMapping("/send_code")
 	public ResponseEntity<CodeHashDTO> sendCode(@RequestBody @Valid EmailDTO emailDTO){
 
-		String email = emailDTO.getEmail();		
+		String email = emailDTO.getEmail();
 
 		CodeHashDTO codeHash = emailTool.create(email);
 
-		String code = codeHash.getCodeAndSetNull();		
+		String code = codeHash.getCodeAndSetNull();
 
 		emailService.send(email, "Confirmar Conta", code);
 
@@ -104,15 +104,15 @@ public class UserController{
 
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@PutMapping("/password")
 	public ResponseEntity<UserDTO> updatePassword(@RequestBody @Valid PasswordUpdateDTO update){
-		
-		emailTool.confirm(update.getEmail(), update.getCodeHash());		
-		
+
+		emailTool.confirm(update.getEmail(), update.getCodeHash());
+
 		UserDTO user = userService.updatePassword(update.getEmail(), update.getPassword());
-		
-		return ResponseEntity.ok(user);						
+
+		return ResponseEntity.ok(user);
 	}
 
 	@PutMapping("/lock")

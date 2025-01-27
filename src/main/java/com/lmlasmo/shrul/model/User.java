@@ -54,7 +54,7 @@ public class User implements UserDetails{
 
 	@Enumerated(EnumType.STRING)
 	private UserStatus status = UserStatus.ACTIVE;
-	
+
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.ROLE_USER;
 
@@ -132,7 +132,7 @@ public class User implements UserDetails{
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
-	}	
+	}
 
 	public UserRole getRole() {
 		return role;
@@ -152,9 +152,9 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.role.name());
-		
+
 		return List.of(authority);
 	}
 

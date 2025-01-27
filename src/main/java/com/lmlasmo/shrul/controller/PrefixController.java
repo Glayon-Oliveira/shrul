@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
-import com.lmlasmo.shrul.service.PrefixService;
 import com.lmlasmo.shrul.service.AccessVerifyService;
+import com.lmlasmo.shrul.service.PrefixService;
 
 import jakarta.validation.Valid;
 
@@ -47,24 +47,24 @@ public class PrefixController {
 	public ResponseEntity<PrefixDTO> update(@RequestBody @Valid PrefixUpdateDTO update){
 
 		PrefixDTO prefix = service.update(update);
-		
-		return ResponseEntity.ok(prefix);			
+
+		return ResponseEntity.ok(prefix);
 	}
 
 	@DeleteMapping
 	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
 	public ResponseEntity<Object> delete(@RequestParam BigInteger id){
 
-		service.delete(id);		
+		service.delete(id);
 
 		return ResponseEntity.ok().build();
 	}
-	
+
 	@GetMapping("/empty")
 	public ResponseEntity<PrefixDTO> findEmptyPrefix(){
-		
+
 		PrefixDTO prefix = service.findByEmptyPrefix(AccessVerifyService.getUserId());
-		
+
 		return ResponseEntity.ok(prefix);
 	}
 

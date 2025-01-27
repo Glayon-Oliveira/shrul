@@ -14,11 +14,11 @@ public class PasswordUpdateDTO extends EmailDTO{
 	@NotBlank
 	@Size(min = 8, max = 255)
 	private String password;
-	
+
 	@JsonProperty("code_hash")
 	@NotNull
-	private CodeHashDTO codeHash;	
-	
+	private CodeHashDTO codeHash;
+
 	public PasswordUpdateDTO() {}
 
 	public String getPassword() {
@@ -35,6 +35,6 @@ public class PasswordUpdateDTO extends EmailDTO{
 
 	public void setCodeHash(CodeHashDTO codeHash) {
 		this.codeHash = codeHash;
-	}	
-	
+	}
+
 }

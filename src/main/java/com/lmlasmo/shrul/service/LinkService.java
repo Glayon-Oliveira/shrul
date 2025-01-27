@@ -33,7 +33,7 @@ public class LinkService {
 
 	public LinkDTO save(@Valid LinkDTO linkDTO) {
 
-		Link link = new Link(linkDTO);		
+		Link link = new Link(linkDTO);
 
 		String id = "0000000000";
 
@@ -77,7 +77,7 @@ public class LinkService {
 
 		return link.get();
 	}
-	
+
 	public Page<LinkDTO> findByUser(BigInteger userId, Pageable pageable) {
 		return repository.findByPrefixUserId(userId, pageable).map(l -> new LinkDTO(l));
 	}
@@ -89,7 +89,7 @@ public class LinkService {
 	public String getDestination(String id) {
 
 		Optional<Link> link = repository.findById(id);
-		
+
 		if((link.isEmpty())) {
 			throw new DestinationNotFoundException("Link not found");
 		}
@@ -100,7 +100,7 @@ public class LinkService {
 	public String getDestination(String id, String prefix) {
 		
 		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
-		
+
 		if(link == null) {
 			throw new DestinationNotFoundException("Link not found");
 		}

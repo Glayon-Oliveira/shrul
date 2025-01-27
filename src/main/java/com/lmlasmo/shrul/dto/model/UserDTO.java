@@ -21,7 +21,7 @@ public class UserDTO {
 
 	public UserDTO() {}
 
-	public UserDTO(User user) {		
+	public UserDTO(User user) {
 		this.email = user.getEmail();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
