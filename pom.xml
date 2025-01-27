@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.lmlasmo</groupId>
 	<artifactId>shrul</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-beta</version>
 	<name>Shrul</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
