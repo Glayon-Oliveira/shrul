@@ -42,6 +42,12 @@ public class ExceptionHandle {
 		return null;
 	}
 	
+	@ExceptionHandler(EmailConfirmationException.class)	
+	@ResponseStatus(code = HttpStatus.FORBIDDEN)
+	public ExceptionDTO exception(EmailConfirmationException exception){				
+		return new ExceptionDTO(HttpStatus.FORBIDDEN, exception);
+	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)	
 	public ExceptionDTO exception(MethodArgumentNotValidException exception){				
 		
