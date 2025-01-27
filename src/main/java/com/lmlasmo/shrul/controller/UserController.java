@@ -2,7 +2,6 @@ package com.lmlasmo.shrul.controller;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,8 @@ import com.lmlasmo.shrul.dto.EmailDTO;
 import com.lmlasmo.shrul.dto.JwtTokenDTO;
 import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
-import com.lmlasmo.shrul.dto.register.PasswordUpdateWithCodeHashDTO;
-import com.lmlasmo.shrul.dto.register.SignupWithCodeHashDTO;
+import com.lmlasmo.shrul.dto.register.PasswordUpdateDTO;
+import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.service.EmailService;
@@ -43,13 +42,15 @@ public class UserController{
 	private UserService userService;
 	private JwtService jwtService;
 	private EmailService emailService;
+	private EmailCodeTool emailTool;
 	private AuthenticationManager manager;
 
 	@Autowired
-	public UserController(UserService userService, JwtService jwtService, EmailService emailService, AuthenticationManager manager) {
+	public UserController(UserService userService, JwtService jwtService, EmailService emailService, EmailCodeTool emailTool, AuthenticationManager manager) {
 		this.userService = userService;
 		this.jwtService = jwtService;
 		this.emailService = emailService;
+		this.emailTool = emailTool;
 		this.manager = manager;
 	}
 
@@ -68,22 +69,14 @@ public class UserController{
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupWithCodeHashDTO signup){
-
-		String code = signup.getCode();
-		String hash = signup.getHash();
-
-		if(!EmailCodeTool.confirm(signup.getEmail(), code, hash)) {
-			return ResponseEntity.badRequest().build();
-		}
+	public ResponseEntity<UserDTO> signup(@RequestBody @Valid SignupDTO signup){
+		
+		CodeHashDTO codeHash = signup.getHashCode();		
+		emailTool.confirm(signup.getEmail(), codeHash);
 
 		UserDTO user = userService.save(signup);
-
-		if(user != null) {
-			return ResponseEntity.ok(user);
-		}
-
-		return ResponseEntity.badRequest().build();
+		
+		return ResponseEntity.ok(user);
 	}
 
 	@PostMapping("/send_code")
@@ -91,14 +84,13 @@ public class UserController{
 
 		String email = emailDTO.getEmail();		
 
-		Map<String,String> codeHash = EmailCodeTool.create(email);
+		CodeHashDTO codeHash = emailTool.create(email);
 
-		String code = codeHash.get("code");
-		String hash = codeHash.get("hash");
+		String code = codeHash.getCodeAndSetNull();		
 
 		emailService.send(email, "Confirmar Conta", code);
 
-		return ResponseEntity.ok(new CodeHashDTO(hash));
+		return ResponseEntity.ok(codeHash);
 	}
 
 	@PutMapping
@@ -114,13 +106,9 @@ public class UserController{
 	}
 	
 	@PutMapping("/password")
-	public ResponseEntity<UserDTO> updatePassword(@RequestBody @Valid PasswordUpdateWithCodeHashDTO update){
+	public ResponseEntity<UserDTO> updatePassword(@RequestBody @Valid PasswordUpdateDTO update){
 		
-		boolean confirmed = EmailCodeTool.confirm(update.getEmail(), update.getCode(), update.getHash());
-		
-		if(!confirmed) {
-			return ResponseEntity.status(403).build();
-		}		
+		emailTool.confirm(update.getEmail(), update.getCodeHash());		
 		
 		UserDTO user = userService.updatePassword(update.getEmail(), update.getPassword());
 		
