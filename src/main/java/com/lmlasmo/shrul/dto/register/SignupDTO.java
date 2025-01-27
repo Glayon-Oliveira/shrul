@@ -13,12 +13,12 @@ public class SignupDTO extends LoginDTO{
 	@JsonProperty("fist_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
-	public String fistName;
+	private String fistName;
 
 	@JsonProperty("last_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
-	public String lastName;
+	private String lastName;
 	
 	@JsonProperty("hash_code")
 	@NotNull
