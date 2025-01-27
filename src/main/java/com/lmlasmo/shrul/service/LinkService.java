@@ -129,4 +129,8 @@ public class LinkService {
 		return link.getDestine();
 	}
 
+	public LinkRepository getRepository() {
+		return repository;
+	}	
+
 }
