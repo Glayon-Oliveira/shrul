@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
+import com.lmlasmo.shrul.dto.register.LinkUpdateDTO;
 import com.lmlasmo.shrul.infra.erro.DestineNotFoundException;
 import com.lmlasmo.shrul.infra.erro.GenericException;
 import com.lmlasmo.shrul.model.Link;
+import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.util.LinkCodeCreator;
 
@@ -51,6 +53,26 @@ public class LinkService {
 		link = repository.save(link);
 
 		return new LinkDTO(link);
+	}
+	
+
+	public LinkDTO update(@Valid LinkUpdateDTO update) {
+		
+		Optional<Link> linkOp = repository.findById(update.getId());
+		
+		Prefix prefix = new Prefix();
+		prefix.setId(update.getPrefix());
+		
+		if(linkOp.isEmpty()) {
+			throw new EntityNotFoundException("Link not found");
+		}
+		
+		Link link = linkOp.get();		
+		link.setPrefix(prefix);
+		
+		link = repository.save(link);
+		
+		return new LinkDTO(link);		
 	}
 
 	public void delete(String id) {
