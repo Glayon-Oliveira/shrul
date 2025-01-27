@@ -87,4 +87,8 @@ public class PrefixService {
 		return repository.findByUserIdAndPrefixIsNull(userId);
 	}
 
+	public PrefixRepository getRepository() {
+		return repository;
+	}	
+
 }
