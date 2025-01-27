@@ -19,7 +19,7 @@ public class SignupDTO extends LoginDTO{
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
-	
+
 	@JsonProperty("hash_code")
 	@NotNull
 	@Valid
@@ -49,6 +49,6 @@ public class SignupDTO extends LoginDTO{
 
 	public void setHashCode(CodeHashDTO hashCode) {
 		this.hashCode = hashCode;
-	}	
+	}
 
 }

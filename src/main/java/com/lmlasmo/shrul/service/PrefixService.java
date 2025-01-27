@@ -45,14 +45,14 @@ public class PrefixService {
 
 		Optional<Prefix> prefixOp = repository.findById(update.getId());
 
-		if(!prefixOp.isPresent()) {			
+		if(!prefixOp.isPresent()) {
 			throw new EntityNotFoundException("Prefix not found");
 		}
 
 		Prefix prefix = prefixOp.get();
-		
+
 		if(prefix.getPrefix() == null) {
-			throw new GenericException("Empty prefix cannot be updated"); 
+			throw new GenericException("Empty prefix cannot be updated");
 		}
 
 		if(repository.existsByPrefix(update.getPrefix())) {
@@ -72,18 +72,18 @@ public class PrefixService {
 		}
 
 		repository.deleteByIdAndPrefixIsNotNull(id);
-		
+
 		if(repository.existsById(id)) {
 			throw new GenericException("Prefix not deleted");
 		}
-		
+
 	}
 
 	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {
 		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
 	}
 
-	public PrefixDTO findByEmptyPrefix(BigInteger userId) {		
+	public PrefixDTO findByEmptyPrefix(BigInteger userId) {
 		return repository.findByUserIdAndPrefixIsNull(userId);
 	}
 

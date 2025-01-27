@@ -17,14 +17,14 @@ public class PrefixDTO {
 
 	@JsonProperty
 	@NotBlank
-	@Pattern(regexp = "^[a-z]+$")	
-	private String prefix;	
+	@Pattern(regexp = "^[a-z]+$")
+	private String prefix;
 
 	public PrefixDTO() {}
 
 	public PrefixDTO(Prefix prefix) {
 		this.id = prefix.getId();
-		this.prefix = prefix.getPrefix();		
+		this.prefix = prefix.getPrefix();
 	}
 
 	public BigInteger getId() {

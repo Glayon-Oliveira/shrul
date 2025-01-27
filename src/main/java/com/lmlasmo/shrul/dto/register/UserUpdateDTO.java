@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class UserUpdateDTO {	
+public class UserUpdateDTO {
 
 	@JsonProperty(value = "first_name", required = false)
 	@Size(min = 1)
@@ -17,7 +17,7 @@ public class UserUpdateDTO {
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
 
-	public UserUpdateDTO(){}	
+	public UserUpdateDTO(){}
 
 	public String getFirstName() {
 		return firstName;

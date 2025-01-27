@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
 
 @JsonInclude(value = Include.NON_NULL)
 public class CodeHashDTO {
-	
+
 	@JsonProperty
 	@NotNull
 	private LocalDateTime timestamp;
@@ -20,12 +20,12 @@ public class CodeHashDTO {
 	@JsonProperty
 	@NotBlank
 	private String hash;
-	
-	@JsonProperty	
+
+	@JsonProperty
 	@NotBlank
 	@Size(min = 6, max = 6)
 	private String code;
-	
+
 	public CodeHashDTO() {}
 
 	public CodeHashDTO(LocalDateTime timestamp, String hash, String code) {
@@ -53,17 +53,17 @@ public class CodeHashDTO {
 	public String getCode() {
 		return code;
 	}
-	
+
 	public String getCodeAndSetNull() {
-		
+
 		String code = this.code;
 		this.code = null;
-		
+
 		return code;
 	}
 
 	public void setCode(String code) {
 		this.code = code;
-	}	
+	}
 
 }
