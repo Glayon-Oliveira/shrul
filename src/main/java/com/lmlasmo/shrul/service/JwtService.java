@@ -43,13 +43,13 @@ public class JwtService {
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);
 
 		try {
-			
+
 			DecodedJWT jwt = JWT.decode(token);
 
 			JWTVerifier verify = JWT.require(algorithm)
 									 .withIssuer(ISSUER)
 									 .build();
-			
+
 			verify.verify(jwt);
 			return true;
 		}catch(Exception e) {
