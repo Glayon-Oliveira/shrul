@@ -29,7 +29,7 @@ public class SecurityConfig {
 				   .formLogin(f -> f.disable())
 				   .httpBasic(Customizer.withDefaults())
 				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup", "/user/send_code", "/user/password").permitAll()
-						   .requestMatchers("/user/**", "/prefix/**", "/link/**").authenticated()
+						   .requestMatchers("/user/**", "/prefix/**", "/link/**", "/url_access/**").authenticated()
 						   .anyRequest().permitAll())
 				   .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
 				   .build();
