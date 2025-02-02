@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import com.lmlasmo.shrul.dto.CodeHashDTO;
 import com.lmlasmo.shrul.dto.EmailDTO;
 import com.lmlasmo.shrul.dto.JwtTokenDTO;
 import com.lmlasmo.shrul.dto.model.UserDTO;
+import com.lmlasmo.shrul.dto.register.DeleteAccountDTO;
 import com.lmlasmo.shrul.dto.register.LoginDTO;
 import com.lmlasmo.shrul.dto.register.PasswordUpdateDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
@@ -103,6 +105,16 @@ public class UserController{
 		}
 
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<Object> delete(@RequestBody @Valid DeleteAccountDTO delete){
+	
+		emailTool.confirm(AccessVerifyService.getUserEmail(), delete.getHashCode());
+		
+		userService.delete(delete, AccessVerifyService.getUserId());
+		
+		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/password")
