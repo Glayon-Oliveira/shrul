@@ -32,6 +32,16 @@ public class AccessVerifyService {
 		}
 
 	}
+	
+	public static String getUserEmail() {
+		
+		try {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return user.getEmail();
+		}catch(Exception e) {
+			return null;
+		}
+	}
 
 	public boolean verifyPrefixAccess(BigInteger id) {
 

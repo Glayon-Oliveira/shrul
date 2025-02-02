@@ -58,7 +58,7 @@ public class User implements UserDetails{
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.ROLE_USER;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<Prefix> prefixes = new HashSet<>();
 
 	public User() {}
