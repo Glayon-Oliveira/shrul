@@ -1,0 +1,13 @@
+CREATE TABLE url_access(
+
+	id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	id_link VARCHAR(10) NOT NULL,
+	ip VARBINARY(16) NOT NULL,
+	browser VARCHAR(50),	
+	device VARCHAR(15),
+	access_time DATETIME NOT NULL,
+	expiration_date DATE NOT NULL,	
+	
+	PRIMARY KEY(id),
+	FOREIGN KEY(id_link) REFERENCES links(id)
+);
