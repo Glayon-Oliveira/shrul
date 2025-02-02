@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Prefix {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "prefix")
+	@OneToMany(mappedBy = "prefix", cascade = CascadeType.REMOVE)
 	private Set<Link> links = new HashSet<>();
 
 	public Prefix() {}

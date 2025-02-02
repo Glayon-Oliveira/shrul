@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.UserDTO;
+import com.lmlasmo.shrul.dto.register.DeleteAccountDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
 import com.lmlasmo.shrul.infra.erro.GenericException;
@@ -46,6 +47,30 @@ public class UserService {
 		user.getPrefixes().add(prefix);
 
 		return new UserDTO(repository.save(user));
+	}
+	
+	public void delete(DeleteAccountDTO delete, BigInteger id) {
+		
+		Optional<User> userOp = repository.findById(id);
+		
+		if(userOp.isEmpty()) {
+			throw new EntityNotFoundException("User not found");
+		}
+		
+		User user = userOp.get();
+		
+		boolean confirm = new BCryptPasswordEncoder().matches(delete.getPassword(), user.getPassword());
+		
+		if(!confirm) {
+			throw new GenericException("Invalid password");
+		}
+		
+		repository.delete(user);
+		
+		if(repository.existsById(id)) {
+			throw new GenericException("User not deleted"); 
+		}
+		
 	}
 
 	public UserDTO update(UserUpdateDTO update, BigInteger id) {
