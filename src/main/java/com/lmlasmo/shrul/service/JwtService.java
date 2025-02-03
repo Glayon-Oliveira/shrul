@@ -22,6 +22,11 @@ public class JwtService {
 
 	public JwtService() {}
 
+	public JwtService(String key, String issuer) {
+		this.JWT_KEY = key;
+		this.ISSUER = issuer;
+	}
+
 	public String gerateToken(String email, List<String> roles) {
 
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);

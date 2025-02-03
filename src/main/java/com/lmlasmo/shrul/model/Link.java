@@ -28,7 +28,7 @@ public class Link {
 	@ManyToOne
 	@JoinColumn(name = "prefix")
 	private Prefix prefix;
-	
+
 	@OneToMany(mappedBy = "link", cascade = CascadeType.REMOVE)
 	private Set<UrlAccess> access = new HashSet<>();
 

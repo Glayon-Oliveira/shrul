@@ -5,12 +5,14 @@ import java.math.BigInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
 @Service
+@Transactional
 public class AccessVerifyService {
 
 	private PrefixRepository prefixRepository;
@@ -32,9 +34,9 @@ public class AccessVerifyService {
 		}
 
 	}
-	
+
 	public static String getUserEmail() {
-		
+
 		try {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			return user.getEmail();

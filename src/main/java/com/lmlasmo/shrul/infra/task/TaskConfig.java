@@ -12,15 +12,15 @@ import com.lmlasmo.shrul.service.UrlAccessService;
 public class TaskConfig {
 
 	private UrlAccessService service;
-	
+
 	@Autowired
 	public TaskConfig(UrlAccessService service) {
 		this.service = service;
 	}
-	
+
 	@Scheduled(cron = "0 0 0 * * *")
-	public void deleteExpiredAccess() {		
+	public void deleteExpiredAccess() {
 		service.deleteByExpired();
 	}
-	
+
 }

@@ -48,29 +48,29 @@ public class UserService {
 
 		return new UserDTO(repository.save(user));
 	}
-	
+
 	public void delete(DeleteAccountDTO delete, BigInteger id) {
-		
+
 		Optional<User> userOp = repository.findById(id);
-		
+
 		if(userOp.isEmpty()) {
 			throw new EntityNotFoundException("User not found");
 		}
-		
+
 		User user = userOp.get();
-		
+
 		boolean confirm = new BCryptPasswordEncoder().matches(delete.getPassword(), user.getPassword());
-		
+
 		if(!confirm) {
 			throw new GenericException("Invalid password");
 		}
-		
+
 		repository.delete(user);
-		
+
 		if(repository.existsById(id)) {
-			throw new GenericException("User not deleted"); 
+			throw new GenericException("User not deleted");
 		}
-		
+
 	}
 
 	public UserDTO update(UserUpdateDTO update, BigInteger id) {

@@ -54,25 +54,25 @@ public class LinkService {
 
 		return new LinkDTO(link);
 	}
-	
+
 
 	public LinkDTO update(@Valid LinkUpdateDTO update) {
-		
+
 		Optional<Link> linkOp = repository.findById(update.getId());
-		
+
 		Prefix prefix = new Prefix();
 		prefix.setId(update.getPrefix());
-		
+
 		if(linkOp.isEmpty()) {
 			throw new EntityNotFoundException("Link not found");
 		}
-		
-		Link link = linkOp.get();		
+
+		Link link = linkOp.get();
 		link.setPrefix(prefix);
-		
+
 		link = repository.save(link);
-		
-		return new LinkDTO(link);		
+
+		return new LinkDTO(link);
 	}
 
 	public void delete(String id) {
@@ -131,6 +131,6 @@ public class LinkService {
 
 	public LinkRepository getRepository() {
 		return repository;
-	}	
+	}
 
 }

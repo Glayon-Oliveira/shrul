@@ -13,11 +13,11 @@ import com.lmlasmo.shrul.model.UrlAccess;
 public interface UrlAccessRepository extends JpaRepository<UrlAccess, BigInteger>{
 
 	public void deleteByLinkId(String id);
-	
+
 	public Page<UrlAccess> findByLinkPrefixUserId(BigInteger user_id, Pageable pageable);
 
 	public Page<UrlAccess> findByLinkPrefixUserIdAndAccessTimeBetween(BigInteger user_id, LocalDateTime now, LocalDateTime lastWeek, Pageable pageable);
 
-	public void deleteByExpirationDateAfter(LocalDate now);	
+	public void deleteByExpirationDateAfter(LocalDate now);
 
 }

@@ -28,12 +28,12 @@ public class RedirectController {
 
 	@GetMapping("/{id}")
 	public RedirectView redirect(@PathVariable String id, HttpServletRequest request) throws UnknownHostException{
-		
-		id = id.toLowerCase();		
+
+		id = id.toLowerCase();
 
 		String destine = service.getDestine(id);
-		
-		accessService.save(new UrlAccessDTO(id, request));		
+
+		accessService.save(new UrlAccessDTO(id, request));
 
 		return new RedirectView(destine);
 	}
@@ -41,11 +41,11 @@ public class RedirectController {
 	@GetMapping("/{prefix}/{id}")
 	public RedirectView redirect(@PathVariable String id, @PathVariable String prefix, HttpServletRequest request) throws UnknownHostException{
 
-		String destine = service.getDestine(id.toLowerCase(), prefix.toLowerCase());	
-		
+		String destine = service.getDestine(id.toLowerCase(), prefix.toLowerCase());
+
 		accessService.save(new UrlAccessDTO(id, request));
 
 		return new RedirectView(destine);
 	}
-	
+
 }

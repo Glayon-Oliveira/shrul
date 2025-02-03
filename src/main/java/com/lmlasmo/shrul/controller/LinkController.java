@@ -42,13 +42,13 @@ public class LinkController {
 
 		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PutMapping
 	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#update.prefix)")
 	public ResponseEntity<LinkDTO> update(@RequestBody @Valid LinkUpdateDTO update){
-		
+
 		LinkDTO link = service.update(update);
-		
+
 		return ResponseEntity.ok(link);
 	}
 

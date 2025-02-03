@@ -15,21 +15,21 @@ public class UrlAccessDTO {
 
 	@JsonProperty("link_id")
 	private String linkId;
-	
+
 	@JsonProperty
-	private String ip;	
-	
+	private String ip;
+
 	@JsonProperty
 	private String browser;
-	
+
 	@JsonProperty
 	private String device;
-	
+
 	@JsonProperty("access_time")
 	private LocalDateTime accessTime;
-	
+
 	public UrlAccessDTO() {}
-	
+
 	public UrlAccessDTO(UrlAccess access) {
 		this.linkId = access.getLink().getId();
 		this.browser = access.getBrowser();
@@ -37,14 +37,14 @@ public class UrlAccessDTO {
 		this.accessTime = access.getAccessTime();
 		setIp(access.getIp());
 	}
-	
+
 	public UrlAccessDTO(String linkId, HttpServletRequest request) {
-		
+
 		this.linkId = linkId;
-		
-		Client client = new Parser().parse(request.getHeader("User-Agent"));		
-		
-		this.ip = request.getRemoteAddr();			
+
+		Client client = new Parser().parse(request.getHeader("User-Agent"));
+
+		this.ip = request.getRemoteAddr();
 		this.browser = client.userAgent.family;
 		this.device = relativeDevice(client);
 		this.accessTime = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class UrlAccessDTO {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	
+
 	public void setIp(byte[] address) {
 		try {
 			this.ip = InetAddress.getByAddress(address).getHostAddress();
@@ -96,32 +96,32 @@ public class UrlAccessDTO {
 
 	public void setAccessTime(LocalDateTime accessTime) {
 		this.accessTime = accessTime;
-	}	
-	
+	}
+
 	private String relativeDevice(Client client) {
-				
+
 		String os = client.os.family.toLowerCase();
 		String browser = client.userAgent.family.toLowerCase();
-				
+
 		if(os.contains("mobile") || browser.contains("mobile")) {
 			return "Mobile";
 		}
-		
+
 		switch(os) {
-			
+
 			case "android":
 			case "iphone":
 			case "ipad":
-				return "Mobile";					
-		
+				return "Mobile";
+
 			case "windows":
 			case "macos":
 			case "linux":
-				return "Desktop";		
-		
+				return "Desktop";
+
 			default: return "Other";
 		}
-		
-	}	
-	
+
+	}
+
 }
