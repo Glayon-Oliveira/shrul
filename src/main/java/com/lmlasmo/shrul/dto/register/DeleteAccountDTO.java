@@ -8,16 +8,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class DeleteAccountDTO {
-	
+
 	@JsonProperty
 	@NotBlank
 	private String password;
-	
+
 	@JsonProperty("hash_code")
 	@NotNull
 	@Valid
 	private CodeHashDTO hashCode;
-	
+
 	public DeleteAccountDTO() {}
 
 	public String getPassword() {
@@ -34,6 +34,6 @@ public class DeleteAccountDTO {
 
 	public void setHashCode(CodeHashDTO hashCode) {
 		this.hashCode = hashCode;
-	}	
+	}
 
 }

@@ -106,14 +106,14 @@ public class UserController{
 
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@DeleteMapping
 	public ResponseEntity<Object> delete(@RequestBody @Valid DeleteAccountDTO delete){
-	
+
 		emailTool.confirm(AccessVerifyService.getUserEmail(), delete.getHashCode());
-		
+
 		userService.delete(delete, AccessVerifyService.getUserId());
-		
+
 		return ResponseEntity.ok().build();
 	}
 
