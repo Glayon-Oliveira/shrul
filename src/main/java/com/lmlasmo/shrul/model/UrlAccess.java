@@ -21,32 +21,32 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "url_access")
 public class UrlAccess {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
-	
+
 	@Column
 	private byte[] ip;
-	
+
 	@Column
 	private String browser;
-	
+
 	@Column
 	private String device;
-	
+
 	@Column
 	private LocalDateTime accessTime = LocalDateTime.now();
-	
+
 	@Column
 	private LocalDate expirationDate;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_link")
 	private Link link;
-	
+
 	public UrlAccess() {}
-	
+
 	public UrlAccess(UrlAccessDTO dto) throws UnknownHostException {
 		this.ip = InetAddress.getByName(dto.getIp()).getAddress();
 		this.browser = dto.getBrowser();
@@ -54,7 +54,7 @@ public class UrlAccess {
 		this.accessTime = dto.getAccessTime();
 		this.link = new Link();
 		this.link.setId(dto.getLinkId());
-	}	
+	}
 
 	public BigInteger getId() {
 		return id;
@@ -110,6 +110,6 @@ public class UrlAccess {
 
 	public void setLink(Link link) {
 		this.link = link;
-	}	
+	}
 
 }

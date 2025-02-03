@@ -20,7 +20,7 @@ public class LinkUpdateDTO {
 	@NotNull
 	@Min(1)
 	private BigInteger prefix;
-	
+
 	public LinkUpdateDTO() {}
 
 	public String getId() {
@@ -37,6 +37,6 @@ public class LinkUpdateDTO {
 
 	public void setPrefix(BigInteger prefix) {
 		this.prefix = prefix;
-	}	
-	
+	}
+
 }
