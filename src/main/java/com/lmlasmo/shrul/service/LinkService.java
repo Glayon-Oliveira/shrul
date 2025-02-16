@@ -120,13 +120,13 @@ public class LinkService {
 
 	public String getDestine(String id, String prefix) {
 
-		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
+		Optional<Link> link = repository.findByIdAndPrefixPrefix(id, prefix);
 
-		if(link == null) {
+		if(link.isEmpty()) {
 			throw new DestineNotFoundException("Link not found");
 		}
 
-		return link.getDestine();
+		return link.get().getDestine();
 	}
 
 	public LinkRepository getRepository() {
