@@ -119,15 +119,15 @@ public class LinkService {
 		return link.get().getDestination();
 	}
 
-	public String getDestination(String id, String prefix) {
-		
-		Link link = repository.findByIdAndPrefixPrefix(id, prefix);
+	public String getDestine(String id, String prefix) {
 
-		if(link == null) {
+		Optional<Link> link = repository.findByIdAndPrefixPrefix(id, prefix);
+
+		if(link.isEmpty()) {
 			throw new DestinationNotFoundException("Link not found");
 		}
 
-		return link.getDestination();
+		return link.get().getDestination();
 	}
 
 	public LinkRepository getRepository() {

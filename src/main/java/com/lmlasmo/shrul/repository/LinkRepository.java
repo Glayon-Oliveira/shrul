@@ -1,6 +1,7 @@
 package com.lmlasmo.shrul.repository;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ public interface LinkRepository extends JpaRepository<Link, String>{
 
 	public Page<Link> findByPrefixId(BigInteger id, Pageable pageable);
 
-	public Link findByIdAndPrefixPrefix(String id, String prefix);
+	public Optional<Link> findByIdAndPrefixPrefix(String id, String prefix);
 
 	public boolean existsByIdAndPrefixUserId(String id, BigInteger userId);
 

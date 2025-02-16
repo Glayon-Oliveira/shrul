@@ -1,6 +1,7 @@
 package com.lmlasmo.shrul.controller;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,9 +64,13 @@ public class PrefixController {
 	@GetMapping("/empty")
 	public ResponseEntity<PrefixDTO> findEmptyPrefix(){
 
-		PrefixDTO prefix = service.findByEmptyPrefix(AccessVerifyService.getUserId());
+		Optional<PrefixDTO> prefix = service.findByEmptyPrefix(AccessVerifyService.getUserId());
+		
+		if(prefix.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
 
-		return ResponseEntity.ok(prefix);
+		return ResponseEntity.ok(prefix.get());
 	}
 
 	@GetMapping

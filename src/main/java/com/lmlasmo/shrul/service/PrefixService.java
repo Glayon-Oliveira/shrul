@@ -83,8 +83,8 @@ public class PrefixService {
 		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
 	}
 
-	public PrefixDTO findByEmptyPrefix(BigInteger userId) {
-		return repository.findByUserIdAndPrefixIsNull(userId);
+	public Optional<PrefixDTO> findByEmptyPrefix(BigInteger userId) {
+		return repository.findByUserIdAndPrefixIsNull(userId).map(p -> new PrefixDTO(p));
 	}
 
 	public PrefixRepository getRepository() {
