@@ -4,49 +4,33 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ErrorMessageDTO {
 
 	@JsonProperty
-	@JsonInclude(value = Include.NON_NULL)
+	@JsonInclude(value = Include.NON_NULL)	
 	private String cause;
 
 	@JsonProperty
+	@NonNull
 	private String message;
-
-	public ErrorMessageDTO(String message) {
-		this.message = message;
-	}
-
-	public ErrorMessageDTO(String cause, String message) {
-		this.cause = cause;
-		this.message = message;
-	}
 
 	public ErrorMessageDTO(Throwable cause, String message) {
 		this.message = message;
-		if(cause != null) {
-			this.cause = cause.getMessage();
-		}
+		if(cause != null) this.cause = cause.getMessage();		
 	}
 
 	public ErrorMessageDTO(Exception exception) {
 		this(exception.getCause(), exception.getMessage());
-	}
-
-	public String getCause() {
-		return cause;
-	}
-
-	public void setCause(String cause) {
-		this.cause = cause;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 }

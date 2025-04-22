@@ -8,7 +8,13 @@ import com.lmlasmo.shrul.model.Prefix;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PrefixDTO {
 
 	@JsonProperty(required = false)
@@ -18,29 +24,11 @@ public class PrefixDTO {
 	@JsonProperty
 	@NotBlank
 	@Pattern(regexp = "^[a-z]+$")
-	private String prefix;
-
-	public PrefixDTO() {}
+	private String prefix;	
 
 	public PrefixDTO(Prefix prefix) {
 		this.id = prefix.getId();
 		this.prefix = prefix.getPrefix();
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
+	}	
 
 }

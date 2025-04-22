@@ -7,7 +7,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SignupDTO extends LoginDTO{
 	
 	@JsonProperty("first_name")	
@@ -24,31 +30,5 @@ public class SignupDTO extends LoginDTO{
 	@NotNull
 	@Valid
 	private CodeHashDTO hashCode;
-
-	public SignupDTO() {}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName.toUpperCase();
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName.toUpperCase();
-	}
-
-	public CodeHashDTO getHashCode() {
-		return hashCode;
-	}
-
-	public void setHashCode(CodeHashDTO hashCode) {
-		this.hashCode = hashCode;
-	}
 
 }

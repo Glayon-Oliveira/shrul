@@ -7,7 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PrefixUpdateDTO {
 
 	@JsonProperty
@@ -17,24 +23,6 @@ public class PrefixUpdateDTO {
 
 	@JsonProperty
 	@Pattern(regexp = "^[A-Za-z]+$")
-	private String prefix;
-
-	public PrefixUpdateDTO() {}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
+	private String prefix;	
+	
 }

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import com.lmlasmo.shrul.dto.CodeHashDTO;
 import com.lmlasmo.shrul.infra.erro.EmailConfirmationException;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Component
 public class EmailCodeTool {
 
@@ -19,9 +22,7 @@ public class EmailCodeTool {
 	private String key;
 
 	public static final int EXPIRES_MINUTES = 5;
-	private AtomicLong logicKey = new AtomicLong(0);
-
-	public EmailCodeTool() {}
+	private AtomicLong logicKey = new AtomicLong(0);	
 
 	private byte somaByte(long value) {
 

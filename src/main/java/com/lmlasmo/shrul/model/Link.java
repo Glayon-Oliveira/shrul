@@ -13,13 +13,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "links")
 public class Link {
 
 	@Id
+	@NonNull
 	private String id;
 
 	@Column
@@ -30,38 +39,12 @@ public class Link {
 	private Prefix prefix;
 
 	@OneToMany(mappedBy = "link", cascade = CascadeType.REMOVE)
-	private Set<UrlAccess> access = new HashSet<>();
+	private Set<UrlAccess> access = new HashSet<>();	
 
-	public Link() {}
-
-	public Link(@Valid LinkDTO linkDTO) {
+	public Link(LinkDTO linkDTO) {
 		this.destination = linkDTO.getDestination();
 		this.prefix = new Prefix();
 		this.prefix.setId(linkDTO.getPrefix());
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getDestination() {
-		return destination;
-	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
-	public Prefix getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(Prefix prefix) {
-		this.prefix = prefix;
-	}
+	}	
 
 }

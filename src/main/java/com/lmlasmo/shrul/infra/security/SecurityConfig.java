@@ -18,12 +18,11 @@ import com.lmlasmo.shrul.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
-
 		return http.csrf(c -> c.disable())
 				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .formLogin(f -> f.disable())
