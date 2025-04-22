@@ -2,9 +2,7 @@ package com.lmlasmo.shrul.service;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,20 +19,18 @@ import com.lmlasmo.shrul.util.LinkCodeCreator;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 @Service
 @Transactional
 public class LinkService {
 
-	private LinkRepository repository;
-
-	@Autowired
-	public LinkService(LinkRepository repository) {
-		this.repository = repository;
-	}
+	private LinkRepository repository;	
 
 	public LinkDTO save(@Valid LinkDTO linkDTO) {
-
 		Link link = new Link(linkDTO);
 
 		String id = "0000000000";
@@ -51,53 +47,36 @@ public class LinkService {
 		}while(repository.existsById(id));
 
 		link.setId(id);
-		link = repository.save(link);
-
-		return new LinkDTO(link);
+		return new LinkDTO(repository.save(link));
 	}
 
 
 	public LinkDTO update(@Valid LinkUpdateDTO update) {
-
-		Optional<Link> linkOp = repository.findById(update.getId());
+		Link link = repository.findById(update.getId()).orElseGet(() -> null);
 
 		Prefix prefix = new Prefix();
 		prefix.setId(update.getPrefix());
 
-		if(linkOp.isEmpty()) {
-			throw new EntityNotFoundException("Link not found");
-		}
-
-		Link link = linkOp.get();
+		if(link == null) throw new EntityNotFoundException("Link not found");		
+		
 		link.setPrefix(prefix);
-
-		link = repository.save(link);
-
-		return new LinkDTO(link);
+		return new LinkDTO(repository.save(link));
 	}
 
 	public void delete(String id) {
-
-		if(!repository.existsById(id)) {
-			throw new EntityNotFoundException("Link not found");
-		}
+		if(!repository.existsById(id)) throw new EntityNotFoundException("Link not found");		
 
 		repository.deleteById(id);
 
-		if(repository.existsById(id)) {
-			throw new GenericException("Link not deleted");
-		}
+		if(repository.existsById(id)) throw new GenericException("Link not deleted");		
 	}
 
 	public LinkDTO findById(String id) {
+		LinkDTO link = repository.findById(id).map(l -> new LinkDTO(l)).orElseGet(() -> null);
 
-		Optional<LinkDTO> link = repository.findById(id).map(l -> new LinkDTO(l));
+		if(link == null) throw new DestinationNotFoundException("Link not found");		
 
-		if(link.isEmpty()) {
-			throw new DestinationNotFoundException("Link not found");
-		}
-
-		return link.get();
+		return link;
 	}
 
 	public Page<LinkDTO> findByUser(BigInteger userId, Pageable pageable) {
@@ -109,29 +88,19 @@ public class LinkService {
 	}
 
 	public String getDestination(String id) {
+		Link link = repository.findById(id).orElseGet(() -> null);
 
-		Optional<Link> link = repository.findById(id);
+		if(link == null) throw new DestinationNotFoundException("Link not found");	
 
-		if((link.isEmpty())) {
-			throw new DestinationNotFoundException("Link not found");
-		}
-
-		return link.get().getDestination();
+		return link.getDestination();
 	}
 
-	public String getDestine(String id, String prefix) {
+	public String getDestination(String id, String prefix) {
+		Link link = repository.findByIdAndPrefixPrefix(id, prefix).orElseGet(() -> null);
 
-		Optional<Link> link = repository.findByIdAndPrefixPrefix(id, prefix);
+		if(link == null) throw new DestinationNotFoundException("Link not found");		
 
-		if(link.isEmpty()) {
-			throw new DestinationNotFoundException("Link not found");
-		}
-
-		return link.get().getDestination();
-	}
-
-	public LinkRepository getRepository() {
-		return repository;
+		return link.getDestination();
 	}
 
 }

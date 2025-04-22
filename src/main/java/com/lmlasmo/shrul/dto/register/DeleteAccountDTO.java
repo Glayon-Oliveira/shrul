@@ -6,7 +6,13 @@ import com.lmlasmo.shrul.dto.CodeHashDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class DeleteAccountDTO {
 
 	@JsonProperty
@@ -17,23 +23,5 @@ public class DeleteAccountDTO {
 	@NotNull
 	@Valid
 	private CodeHashDTO hashCode;
-
-	public DeleteAccountDTO() {}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public CodeHashDTO getHashCode() {
-		return hashCode;
-	}
-
-	public void setHashCode(CodeHashDTO hashCode) {
-		this.hashCode = hashCode;
-	}
 
 }

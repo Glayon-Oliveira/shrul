@@ -11,6 +11,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Service
 public class JwtService {
 	
@@ -20,17 +23,8 @@ public class JwtService {
 	@Value("app.jwt.issuer")
 	private String ISSUER;
 
-	public JwtService() {}
-
-	public JwtService(String key, String issuer) {
-		this.JWT_KEY = key;
-		this.ISSUER = issuer;
-	}
-
 	public String gerateToken(String email, List<String> roles) {
-
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);
-
 		Date issued = new Date();
 		Date expires = new Date(System.currentTimeMillis()+60*60*1000);
 
@@ -44,11 +38,9 @@ public class JwtService {
 	}
 
 	public boolean isTokenValid(String token) {
-
 		Algorithm algorithm = Algorithm.HMAC256(JWT_KEY);
 
 		try {
-
 			DecodedJWT jwt = JWT.decode(token);
 
 			JWTVerifier verify = JWT.require(algorithm)
@@ -60,15 +52,12 @@ public class JwtService {
 		}catch(Exception e) {
 			return false;
 		}
-
 	}
 
 	public String getEmail(String token) {
-
 		if(isTokenValid(token)) {
 			return JWT.decode(token).getSubject();
 		}
-
 		return null;
 	}
 

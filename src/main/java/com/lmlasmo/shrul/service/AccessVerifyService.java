@@ -2,7 +2,6 @@ package com.lmlasmo.shrul.service;
 
 import java.math.BigInteger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,44 +10,30 @@ import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.LinkRepository;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 @Service
 @Transactional
 public class AccessVerifyService {
 
 	private PrefixRepository prefixRepository;
-	private LinkRepository linkRepository;
-
-	@Autowired
-	public AccessVerifyService(PrefixRepository prefixRepository, LinkRepository linkRepository) {
-		this.prefixRepository = prefixRepository;
-		this.linkRepository = linkRepository;
-	}
+	private LinkRepository linkRepository;	
 
 	public static BigInteger getUserId() {
-
-		try {
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return user.getId();
-		}catch(Exception e) {
-			return BigInteger.valueOf(0);
-		}
-
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user.getId();
 	}
 
 	public static String getUserEmail() {
-
-		try {
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return user.getEmail();
-		}catch(Exception e) {
-			return null;
-		}
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user.getEmail();		
 	}
 
 	public boolean verifyPrefixAccess(BigInteger id) {
-
 		BigInteger userId = getUserId();
-
 		return prefixRepository.existsByIdAndUserId(id, userId);
 	}
 

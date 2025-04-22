@@ -23,7 +23,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails{
@@ -32,6 +41,7 @@ public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NonNull
 	private BigInteger id;
 
 	@Column
@@ -61,100 +71,15 @@ public class User implements UserDetails{
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<Prefix> prefixes = new HashSet<>();
 
-	public User() {}
-
 	public User(SignupDTO signup) {
 		this.email = signup.getEmail();		
 		this.firstName = signup.getFirstName();
 		this.lastName = signup.getLastName();
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
-
-	public UserStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(UserStatus status) {
-		this.status = status;
-	}
-
-	public UserRole getRole() {
-		return role;
-	}
-
-	public void setRole(UserRole role) {
-		this.role = role;
-	}
-
-	public Set<Prefix> getPrefixes() {
-		return prefixes;
-	}
-
-	public void setPrefixes(Set<Prefix> prefixes) {
-		this.prefixes = prefixes;
-	}
+	}	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.role.name());
-
 		return List.of(authority);
 	}
 

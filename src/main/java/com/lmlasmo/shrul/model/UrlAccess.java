@@ -17,22 +17,34 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "url_access")
 public class UrlAccess {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private BigInteger id;
 
 	@Column
+	@NonNull
 	private byte[] ip;
 
 	@Column
+	@NonNull
 	private String browser;
 
 	@Column
+	@NonNull
 	private String device;
 
 	@Column
@@ -43,9 +55,12 @@ public class UrlAccess {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_link")
+	@NonNull
 	private Link link;
-
-	public UrlAccess() {}
+	
+	public UrlAccess(BigInteger id) {
+		this.id = id;
+	}	
 
 	public UrlAccess(UrlAccessDTO dto) throws UnknownHostException {
 		this.ip = InetAddress.getByName(dto.getIp()).getAddress();
@@ -54,62 +69,6 @@ public class UrlAccess {
 		this.accessTime = dto.getAccessTime();
 		this.link = new Link();
 		this.link.setId(dto.getLinkId());
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public byte[] getIp() {
-		return ip;
-	}
-
-	public void setIp(byte[] ip) {
-		this.ip = ip;
-	}
-
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public String getDevice() {
-		return device;
-	}
-
-	public void setDevice(String device) {
-		this.device = device;
-	}
-
-	public LocalDateTime getAccessTime() {
-		return accessTime;
-	}
-
-	public void setAccessTime(LocalDateTime accessTime) {
-		this.accessTime = accessTime;
-	}
-
-	public LocalDate getExpirationDate() {
-		return expirationDate;
-	}
-
-	public void setExpirationDate(LocalDate expirationDate) {
-		this.expirationDate = expirationDate;
-	}
-
-	public Link getLink() {
-		return link;
-	}
-
-	public void setLink(Link link) {
-		this.link = link;
-	}
+	}	
 
 }

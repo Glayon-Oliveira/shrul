@@ -5,22 +5,18 @@ import com.lmlasmo.shrul.dto.EmailDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginDTO extends EmailDTO{
 
 	@JsonProperty
 	@NotBlank
 	@Size(min = 8, max = 255)
 	private String password;
-
-	public LoginDTO() {}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 }

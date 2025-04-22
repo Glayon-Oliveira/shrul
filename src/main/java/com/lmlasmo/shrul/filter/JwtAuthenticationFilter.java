@@ -1,9 +1,7 @@
 package com.lmlasmo.shrul.filter;
 
 import java.io.IOException;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,70 +15,54 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private UserRepository repository;
-	private JwtService jwtService;
-
-	@Autowired
-	public JwtAuthenticationFilter(UserRepository repository, JwtService jwtService) {
-		this.repository = repository;
-		this.jwtService = jwtService;
-	}
+	private JwtService jwtService;	
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
 		String token = findToken(request);
 
-		if(token != null) {
-			authenticate(token);
-		}
+		if(token != null) authenticate(token);		
 
 		filterChain.doFilter(request, response);
 	}
 
 	private void authenticate(String token) {
+		User user = findUser(token);
+		
+		if(user == null) return;					
 
-		Optional<User> userOp = findUser(token);
-
-		if(userOp.isPresent()) {
-
-			User user = userOp.get();
-
-			if(isAuthenticationPermited(user)) {
-
-				UsernamePasswordAuthenticationToken authToken = UsernamePasswordAuthenticationToken.authenticated(user, null, user.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(authToken);
-			}
-
-		}
-
+		if(!isAuthenticationPermited(user)) return;
+		
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authToken);
 	}
 
 	private String findToken(HttpServletRequest request) {
-
 		String auth = request.getHeader("Authorization");
 
-		if(auth != null) {
+		if(auth == null) return null;
 
-			if(auth.contains("Bearer ")) {
-				auth = auth.replace("Bearer ", "");
-			}
-
-		}
-
+		if(!auth.contains("Bearer")) return null;
+		
+		auth = auth.replace("Bearer", "");
+		auth = auth.replace(" ", "");
 		return auth;
 	}
 
-	private Optional<User> findUser(String token) {
-
+	private User findUser(String token) {
 		String email = jwtService.getEmail(token);
-
-		return (email != null) ? repository.findByEmail(email) : Optional.ofNullable(null);
+		
+		if(email == null) return null;
+		
+		return repository.findByEmail(email).orElseGet(() -> null);
 	}
 
 	private boolean isAuthenticationPermited(User user) {

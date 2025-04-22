@@ -20,55 +20,52 @@ public class ExceptionHandle {
 	@ExceptionHandler(EntityExistsException.class)
 	@ResponseStatus(code = HttpStatus.CONFLICT)
 	public ExceptionDTO exception(EntityExistsException exception){
-
-		return new ExceptionDTO(HttpStatus.CONFLICT, exception);
+		return new ExceptionDTO(409, HttpStatus.CONFLICT.getReasonPhrase(), new ErrorMessageDTO(exception.getMessage()));
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ExceptionDTO exception(EntityNotFoundException exception){
-
-		return new ExceptionDTO(HttpStatus.BAD_REQUEST, exception);
+		return new ExceptionDTO(404, HttpStatus.NOT_FOUND.getReasonPhrase(), new ErrorMessageDTO(exception.getMessage()));
 	}
 
 	@ExceptionHandler(GenericException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionDTO exception(GenericException exception){
-
-		return new ExceptionDTO(HttpStatus.BAD_REQUEST, exception);
+		return new ExceptionDTO(400, HttpStatus.BAD_REQUEST.getReasonPhrase(), new ErrorMessageDTO(exception.getMessage()));
 	}
 	
 	@ExceptionHandler(DestinationNotFoundException.class)	
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public ExceptionDTO exception(DestinationNotFoundException exception){				
+	public Void exception(DestinationNotFoundException exception){				
 		return null;
-	}
+	}	
 
 	@ExceptionHandler(EmailConfirmationException.class)
 	@ResponseStatus(code = HttpStatus.FORBIDDEN)
 	public ExceptionDTO exception(EmailConfirmationException exception){
-		return new ExceptionDTO(HttpStatus.FORBIDDEN, exception);
+		return new ExceptionDTO(403, HttpStatus.FORBIDDEN.getReasonPhrase(), new ErrorMessageDTO(exception.getMessage()));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionDTO exception(MethodArgumentNotValidException exception){
-
 		ErrorMessageDTO[] errors = exception.getFieldErrors().stream()
 															 .map(e -> new ErrorMessageDTO(e.getField(), e.getDefaultMessage()))
 															 .toList()
 															 .toArray(ErrorMessageDTO[]::new);
 
-		return new ExceptionDTO(HttpStatus.BAD_REQUEST, errors);
+		return new ExceptionDTO(400, HttpStatus.BAD_REQUEST.getReasonPhrase(), errors);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ExceptionDTO exception(HttpMessageNotReadableException exception){
-
 		String message = "Required request body is missing";
 
-		if(exception.getMessage().contains("DTO")) {
-			message += ": JSON";
-		}
+		if(exception.getMessage().contains("DTO")) message += ": JSON";		
 
-		return new ExceptionDTO(HttpStatus.BAD_REQUEST, new ErrorMessageDTO(exception.getCause(), message));
+		return new ExceptionDTO(400, HttpStatus.BAD_REQUEST.getReasonPhrase(), new ErrorMessageDTO(message));
 	}
 
 }

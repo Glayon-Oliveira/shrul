@@ -17,13 +17,23 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "prefixes")
 public class Prefix {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NonNull
 	private BigInteger id;
 
 	@Column
@@ -36,44 +46,9 @@ public class Prefix {
 	@OneToMany(mappedBy = "prefix", cascade = CascadeType.REMOVE)
 	private Set<Link> links = new HashSet<>();
 
-	public Prefix() {}
-
-	public Prefix(PrefixDTO prefixDTO, BigInteger userId) {
+	public Prefix(PrefixDTO prefixDTO) {
 		this.prefix = prefixDTO.getPrefix();
-		this.user = new User();
-		this.user.setId(userId);
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Set<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(Set<Link> links) {
-		this.links = links;
-	}
+		this.user = new User(prefixDTO.getId());		
+	}	
 
 }

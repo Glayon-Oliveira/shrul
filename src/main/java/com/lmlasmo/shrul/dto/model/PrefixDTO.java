@@ -9,7 +9,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PrefixDTO {
 
 	@JsonProperty(required = false)
@@ -20,29 +26,11 @@ public class PrefixDTO {
 	@NotBlank
 	@Size(min = 1, max = 15)
 	@Pattern(regexp = "^[a-z0-9]+$")
-	private String prefix;
-
-	public PrefixDTO() {}
+	private String prefix;	
 
 	public PrefixDTO(Prefix prefix) {
 		this.id = prefix.getId();
 		this.prefix = prefix.getPrefix();
-	}
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
+	}	
 
 }

@@ -8,7 +8,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class LinkUpdateDTO {
 
 	@JsonProperty
@@ -20,23 +26,5 @@ public class LinkUpdateDTO {
 	@NotNull
 	@Min(1)
 	private BigInteger prefix;
-
-	public LinkUpdateDTO() {}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public BigInteger getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(BigInteger prefix) {
-		this.prefix = prefix;
-	}
 
 }
