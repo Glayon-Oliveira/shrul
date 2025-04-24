@@ -22,15 +22,6 @@ public class ErrorMessageDTO {
 
 	@JsonProperty
 	@NonNull
-	private String message;
-
-	public ErrorMessageDTO(Throwable cause, String message) {
-		this.message = message;
-		if(cause != null) this.cause = cause.getMessage();		
-	}
-
-	public ErrorMessageDTO(Exception exception) {
-		this(exception.getCause(), exception.getMessage());
-	}
+	private String message;	
 
 }

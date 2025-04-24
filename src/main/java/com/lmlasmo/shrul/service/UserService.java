@@ -11,7 +11,9 @@ import com.lmlasmo.shrul.dto.model.UserDTO;
 import com.lmlasmo.shrul.dto.register.DeleteAccountDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
-import com.lmlasmo.shrul.infra.erro.GenericException;
+import com.lmlasmo.shrul.infra.exception.ActionFailedException;
+import com.lmlasmo.shrul.infra.exception.InvalidPasswordException;
+import com.lmlasmo.shrul.infra.exception.UnchangedFieldException;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.UserRepository;
@@ -50,11 +52,11 @@ public class UserService {
 
 		boolean confirm = new BCryptPasswordEncoder().matches(delete.getPassword(), user.getPassword());
 
-		if(!confirm) throw new GenericException("Invalid password");
+		if(!confirm) throw new InvalidPasswordException("Invalid password");
 
 		repository.delete(user);
 
-		if(repository.existsById(id)) throw new GenericException("User not deleted");
+		if(repository.existsById(id)) throw new ActionFailedException("User not deleted");
 	}
 
 	public UserDTO update(UserUpdateDTO update, BigInteger id) {
@@ -87,7 +89,7 @@ public class UserService {
 	private UserDTO updatePassword(User user, String password) {
 		if(user == null) throw new EntityNotFoundException("User not found");		
 
-		if(user.getPassword().equals(password)) throw new GenericException("Password used");
+		if(user.getPassword().equals(password)) throw new UnchangedFieldException("Password used");
 
 		user.setPassword(encoder.encode(password));
 		return new UserDTO(repository.save(user));
@@ -97,8 +99,8 @@ public class UserService {
 		User user = repository.findById(id).orElseGet(() -> null);
 
 		if (user == null) throw new EntityNotFoundException("User not found");
-
-		if(user.isLocked()) throw new GenericException("User locked");
+		
+		if(user.isLocked() == locked) throw new UnchangedFieldException("User is locked");
 
 		user.setLocked(locked);
 		repository.save(user);

@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.infra.erro;
+package com.lmlasmo.shrul.infra.exception;
 
 public class DestineNotFoundException extends RuntimeException {
 

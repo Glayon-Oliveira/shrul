@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.lmlasmo.shrul.dto.CodeHashDTO;
-import com.lmlasmo.shrul.infra.erro.EmailConfirmationException;
+import com.lmlasmo.shrul.infra.exception.EmailConfirmationException;
 
 import lombok.NoArgsConstructor;
 

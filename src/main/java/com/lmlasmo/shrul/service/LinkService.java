@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.LinkDTO;
-import com.lmlasmo.shrul.infra.erro.DestinationNotFoundException;
+import com.lmlasmo.shrul.infra.exception.DestinationNotFoundException;
 import com.lmlasmo.shrul.dto.register.LinkUpdateDTO;
-import com.lmlasmo.shrul.infra.erro.GenericException;
+import com.lmlasmo.shrul.infra.exception.SystemFailedException;
 import com.lmlasmo.shrul.model.Link;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.LinkRepository;
@@ -68,7 +68,7 @@ public class LinkService {
 
 		repository.deleteById(id);
 
-		if(repository.existsById(id)) throw new GenericException("Link not deleted");		
+		if(repository.existsById(id)) throw new SystemFailedException("Link not deleted");		
 	}
 
 	public LinkDTO findById(String id) {
