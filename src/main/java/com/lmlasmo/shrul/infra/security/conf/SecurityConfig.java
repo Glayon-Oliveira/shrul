@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.infra.security;
+package com.lmlasmo.shrul.infra.security.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.lmlasmo.shrul.filter.JwtAuthenticationFilter;
+import com.lmlasmo.shrul.infra.security.handler.AccessDeniedHandlerImpl;
+import com.lmlasmo.shrul.infra.security.handler.AuthenticationEntryPointImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -22,11 +24,14 @@ import com.lmlasmo.shrul.filter.JwtAuthenticationFilter;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPointImpl entryPoint,
+			AccessDeniedHandlerImpl deniedHandler, JwtAuthenticationFilter jwtFilter) throws Exception {
 		return http.csrf(c -> c.disable())
 				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				   .formLogin(f -> f.disable())
 				   .httpBasic(Customizer.withDefaults())
+				   .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)
+						   .accessDeniedHandler(deniedHandler))
 				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup", "/user/send_code", "/user/password").permitAll()
 						   .requestMatchers("/user/**", "/prefix/**", "/link/**", "/url_access/**").authenticated()
 						   .anyRequest().permitAll())

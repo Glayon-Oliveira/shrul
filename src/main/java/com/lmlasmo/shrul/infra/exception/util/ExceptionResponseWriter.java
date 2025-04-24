@@ -1,0 +1,35 @@
+package com.lmlasmo.shrul.infra.exception.util;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lmlasmo.shrul.dto.error.ErrorMessageDTO;
+import com.lmlasmo.shrul.dto.error.ExceptionDTO;
+
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+
+@Component
+@AllArgsConstructor
+public class ExceptionResponseWriter {
+	
+	private ObjectMapper mapper;
+	
+	public void writer(HttpStatus status, String path, String message, HttpServletResponse response) throws IOException {
+		
+		ExceptionDTO exception = new ExceptionDTO(status, path, new ErrorMessageDTO(null));
+		
+		String exceptionValue = mapper.writeValueAsString(exception);
+		
+		response.setStatus(status.value());
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		response.getWriter().write(exceptionValue);
+	}
+
+}

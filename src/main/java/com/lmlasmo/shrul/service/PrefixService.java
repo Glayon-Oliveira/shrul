@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lmlasmo.shrul.dto.model.PrefixDTO;
 import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
-import com.lmlasmo.shrul.infra.erro.GenericException;
+import com.lmlasmo.shrul.infra.exception.SystemFailedException;
+import com.lmlasmo.shrul.infra.exception.UnchangedFieldException;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
@@ -38,7 +39,7 @@ public class PrefixService {
 
 		if(prefix == null) throw new EntityNotFoundException("Prefix not found");		
 
-		if(prefix.getPrefix() == null) throw new GenericException("Empty prefix cannot be updated");		
+		if(prefix.getPrefix() == null) throw new UnchangedFieldException("Empty prefix cannot be updated");		
 
 		if(repository.existsByPrefix(update.getPrefix())) throw new EntityExistsException("Prefix exists");		
 
@@ -51,7 +52,7 @@ public class PrefixService {
 
 		repository.deleteByIdAndPrefixIsNotNull(id);
 
-		if(repository.existsById(id)) throw new GenericException("Prefix not deleted");
+		if(repository.existsById(id)) throw new SystemFailedException("Prefix not deleted");
 	}
 
 	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {

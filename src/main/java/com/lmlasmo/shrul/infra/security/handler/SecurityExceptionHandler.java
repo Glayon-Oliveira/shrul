@@ -1,0 +1,35 @@
+package com.lmlasmo.shrul.infra.security.handler;
+
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.lmlasmo.shrul.dto.error.ExceptionDTO;
+import com.lmlasmo.shrul.infra.exception.util.ExceptionDTOFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestControllerAdvice
+@ResponseBody
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class SecurityExceptionHandler {
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	public ExceptionDTO handleUnauthorizedExceptions(BadCredentialsException exception, HttpServletRequest request){
+		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.UNAUTHORIZED, request, exception);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(code = HttpStatus.FORBIDDEN)
+	public ExceptionDTO accessDeniedException(AccessDeniedException exception, HttpServletRequest request) {
+		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.FORBIDDEN, request, exception);
+	}
+	
+}
