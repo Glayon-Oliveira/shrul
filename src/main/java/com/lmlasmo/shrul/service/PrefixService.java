@@ -7,10 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.model.PrefixDTO;
-import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
+import com.lmlasmo.shrul.dto.PrefixDTO;
+import com.lmlasmo.shrul.dto.register.RegisterPrefixDTO;
+import com.lmlasmo.shrul.dto.update.PrefixUpdateDTO;
 import com.lmlasmo.shrul.infra.exception.SystemFailedException;
 import com.lmlasmo.shrul.infra.exception.UnchangedFieldException;
+import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
+import com.lmlasmo.shrul.mapper.PrefixMapper;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.PrefixRepository;
 
@@ -25,13 +28,14 @@ import lombok.Getter;
 @Transactional
 public class PrefixService {
 
-	private PrefixRepository repository;	
+	private PrefixRepository repository;
+	private PrefixMapper mapper;
 
-	public PrefixDTO save(PrefixDTO prefixDTO) {
+	public PrefixDTO save(RegisterPrefixDTO prefixDTO, BigInteger id) {
 		if(repository.existsByPrefix(prefixDTO.getPrefix())) throw new EntityExistsException("Prefix used");	
 
-		Prefix prefix = new Prefix(prefixDTO);		
-		return new PrefixDTO(repository.save(prefix));
+		Prefix prefix = mapper.dtoToPrefix(prefixDTO);		
+		return mapper.prefixToDTO(repository.save(prefix));
 	}
 
 	public PrefixDTO update(PrefixUpdateDTO update) {
@@ -44,7 +48,7 @@ public class PrefixService {
 		if(repository.existsByPrefix(update.getPrefix())) throw new EntityExistsException("Prefix exists");		
 
 		prefix.setPrefix(update.getPrefix());		
-		return new PrefixDTO(repository.save(prefix));
+		return mapper.prefixToDTO(repository.save(prefix));
 	}
 
 	public void delete(BigInteger id) {
@@ -56,15 +60,23 @@ public class PrefixService {
 	}
 
 	public Page<PrefixDTO> findByUser(BigInteger id, Pageable pageable) {
-		return repository.findByUserId(id, pageable).map(p -> new PrefixDTO(p));
+		return repository.findByUserId(id, pageable).map(p -> mapper.prefixToDTO(p));
 	}
 
 	public PrefixDTO findByEmptyPrefix(BigInteger userId) {
-		PrefixDTO prefix = repository.findByUserIdAndPrefixIsNull(userId).map(p -> new PrefixDTO(p)).orElseGet(() -> null);
+		PrefixDTO prefix = repository.findByUserIdAndPrefixIsNull(userId).map(p -> mapper.prefixToDTO(p)).orElseGet(() -> null);
 		
 		if(prefix == null) throw new EntityNotFoundException("Empty prefix not found");
 		
 		return prefix;
-	}	
+	}
+	
+	public boolean existsByIdAndUser(BigInteger prefixId, BigInteger userId) {
+		return repository.existsByIdAndUserId(prefixId, userId);
+	}
+	
+	public boolean existsByIdAndAuth(BigInteger prefixId) {
+		return repository.existsByIdAndUserId(prefixId, AuthenticatedUser.getUserId());
+	}
 
 }

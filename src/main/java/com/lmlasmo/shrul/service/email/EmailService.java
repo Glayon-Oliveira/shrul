@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.service;
+package com.lmlasmo.shrul.service.email;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

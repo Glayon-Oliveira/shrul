@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto.error;
+package com.lmlasmo.shrul.dto.exception;
 
 import java.time.LocalDateTime;
 

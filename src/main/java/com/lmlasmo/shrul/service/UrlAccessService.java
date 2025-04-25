@@ -12,7 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.model.UrlAccessDTO;
+import com.lmlasmo.shrul.dto.UrlAccessDTO;
+import com.lmlasmo.shrul.mapper.UrlAccessMapper;
 import com.lmlasmo.shrul.model.Link;
 import com.lmlasmo.shrul.model.UrlAccess;
 import com.lmlasmo.shrul.repository.UrlAccessRepository;
@@ -30,6 +31,7 @@ import ua_parser.Parser;
 public class UrlAccessService {
 
 	private UrlAccessRepository repository;
+	private UrlAccessMapper mapper;
 
 	public void save(String id, HttpServletRequest request) throws UnknownHostException {
 		Client client = new Parser().parse(request.getHeader("User-Agent"));
@@ -60,17 +62,17 @@ public class UrlAccessService {
 	public Page<UrlAccessDTO> findByLastWeek(BigInteger user_id, Pageable pageable){
 		LocalDateTime now = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime lastWeek = now.minusWeeks(1);
-		return repository.findByLinkPrefixUserIdAndAccessTimeBetween(user_id, now, lastWeek, pageable).map(a -> new UrlAccessDTO(a));
+		return repository.findByLinkPrefixUserIdAndAccessTimeBetween(user_id, now, lastWeek, pageable).map(a -> mapper.accessToDTO(a));
 	}
 
 	public Page<UrlAccessDTO> findByLastMonth(BigInteger user_id, Pageable pageable){
 		LocalDateTime now = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime lastMonth = now.minusMonths(1);
-		return repository.findByLinkPrefixUserIdAndAccessTimeBetween(user_id, now, lastMonth, pageable).map(a -> new UrlAccessDTO(a));
+		return repository.findByLinkPrefixUserIdAndAccessTimeBetween(user_id, now, lastMonth, pageable).map(a -> mapper.accessToDTO(a));
 	}
 
 	public Page<UrlAccessDTO> findAll(BigInteger user_id, Pageable pageable){
-		return repository.findByLinkPrefixUserId(user_id, pageable).map(a -> new UrlAccessDTO(a));
+		return repository.findByLinkPrefixUserId(user_id, pageable).map(a -> mapper.accessToDTO(a));
 	}	
 	
 	private String relativeDevice(Client client) {

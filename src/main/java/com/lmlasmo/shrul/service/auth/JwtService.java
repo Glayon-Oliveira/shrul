@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.service;
+package com.lmlasmo.shrul.service.auth;
 
 import java.util.Date;
 import java.util.List;

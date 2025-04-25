@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto.register;
+package com.lmlasmo.shrul.dto.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

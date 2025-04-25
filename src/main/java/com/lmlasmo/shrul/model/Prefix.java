@@ -4,8 +4,6 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.lmlasmo.shrul.dto.model.PrefixDTO;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,10 +43,5 @@ public class Prefix {
 
 	@OneToMany(mappedBy = "prefix", cascade = CascadeType.REMOVE)
 	private Set<Link> links = new HashSet<>();
-
-	public Prefix(PrefixDTO prefixDTO) {
-		this.prefix = prefixDTO.getPrefix();
-		this.user = new User(prefixDTO.getId());		
-	}	
 
 }

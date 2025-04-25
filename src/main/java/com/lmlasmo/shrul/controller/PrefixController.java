@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lmlasmo.shrul.dto.model.PrefixDTO;
-import com.lmlasmo.shrul.dto.register.PrefixUpdateDTO;
-import com.lmlasmo.shrul.service.AccessVerifyService;
+import com.lmlasmo.shrul.dto.PrefixDTO;
+import com.lmlasmo.shrul.dto.register.RegisterPrefixDTO;
+import com.lmlasmo.shrul.dto.update.PrefixUpdateDTO;
+import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.service.PrefixService;
 
 import jakarta.validation.Valid;
@@ -35,20 +36,19 @@ public class PrefixController {
 
 	@PostMapping
 	@ResponseBody	
-	public PrefixDTO register(@RequestBody @Valid PrefixDTO prefix){
-		prefix.setId(AccessVerifyService.getUserId());
-		return service.save(prefix);
+	public PrefixDTO register(@RequestBody @Valid RegisterPrefixDTO prefix){		
+		return service.save(prefix, AuthenticatedUser.getUserId());
 	}
 
 	@PutMapping
 	@ResponseBody
-	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#update.id)")	
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#update.id)")	
 	public PrefixDTO update(@RequestBody @Valid PrefixUpdateDTO update){
 		return service.update(update);		
 	}
 
 	@DeleteMapping	
-	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#id)")
 	public Void delete(@RequestParam BigInteger id){
 		service.delete(id);
 		return null;
@@ -57,13 +57,13 @@ public class PrefixController {
 	@GetMapping("/empty")
 	@ResponseBody	
 	public PrefixDTO findEmptyPrefix(){
-		return service.findByEmptyPrefix(AccessVerifyService.getUserId());
+		return service.findByEmptyPrefix(AuthenticatedUser.getUserId());
 	}
 
 	@GetMapping
 	@ResponseBody	
 	public Page<PrefixDTO> findPrefixes(Pageable pageable){
-		return service.findByUser(AccessVerifyService.getUserId(), pageable);
+		return service.findByUser(AuthenticatedUser.getUserId(), pageable);
 	}
 
 }

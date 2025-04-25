@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lmlasmo.shrul.dto.model.LinkDTO;
-import com.lmlasmo.shrul.dto.register.LinkUpdateDTO;
-import com.lmlasmo.shrul.service.AccessVerifyService;
+import com.lmlasmo.shrul.dto.LinkDTO;
+import com.lmlasmo.shrul.dto.register.RegisterLinkDTO;
+import com.lmlasmo.shrul.dto.update.LinkUpdateDTO;
+import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.service.LinkService;
 
 import jakarta.validation.Valid;
@@ -35,20 +36,20 @@ public class LinkController {
 
 	@PostMapping
 	@ResponseBody	
-	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#link.prefix)")
-	public LinkDTO register(@RequestBody @Valid LinkDTO link){
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#link.prefixId)")
+	public LinkDTO register(@RequestBody @Valid RegisterLinkDTO link){
 		return service.save(link);		
 	}
 
 	@PutMapping
 	@ResponseBody
-	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#update.prefix)")
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#update.prefixId)")
 	public LinkDTO update(@RequestBody @Valid LinkUpdateDTO update){
 		return service.update(update);
 	}
 
 	@DeleteMapping
-	@PreAuthorize("@accessVerifyService.verifyLinkAccess(#id)")
+	@PreAuthorize("@linkService.existsByIdAndAuth(#id)")
 	public Void delete(@RequestParam String id){
 		service.delete(id.toLowerCase());
 		return null;
@@ -57,12 +58,12 @@ public class LinkController {
 	@GetMapping
 	@ResponseBody
 	public Page<LinkDTO> findByUser(Pageable pageable){
-		return service.findByUser(AccessVerifyService.getUserId(), pageable);		
+		return service.findByUser(AuthenticatedUser.getUserId(), pageable);		
 	}
 
 	@GetMapping(params = "prefix")
 	@ResponseBody
-	@PreAuthorize("@accessVerifyService.verifyPrefixAccess(#id)")
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#id)")
 	public Page<LinkDTO> findByPrefix(@RequestParam("prefix") BigInteger id, Pageable pageable){
 		return service.findByPrefix(id, pageable);		
 	}

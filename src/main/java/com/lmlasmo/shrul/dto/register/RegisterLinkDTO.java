@@ -1,11 +1,10 @@
-package com.lmlasmo.shrul.dto.model;
+package com.lmlasmo.shrul.dto.register;
 
 import java.math.BigInteger;
 
 import org.hibernate.validator.constraints.URL;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lmlasmo.shrul.model.Link;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,25 +16,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LinkDTO {
-
-	@JsonProperty(required = false)
-	private String id;
+public class RegisterLinkDTO {	
 
 	@JsonProperty
 	@NotBlank
 	@URL
-	private String destination;
-	
-	@JsonProperty
+	private String destine;
+
+	@JsonProperty("prefix_id")
 	@NotNull
 	@Min(1)
-	private BigInteger prefix;	
-
-	public LinkDTO(Link link) {
-		this.id = link.getId();
-		this.destination = link.getDestination();
-		this.prefix = link.getPrefix().getId();
-	}
+	private BigInteger prefixId;
 
 }

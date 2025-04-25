@@ -1,12 +1,8 @@
 package com.lmlasmo.shrul.model;
 
 import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import com.lmlasmo.shrul.dto.model.UrlAccessDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,15 +56,6 @@ public class UrlAccess {
 	
 	public UrlAccess(BigInteger id) {
 		this.id = id;
-	}	
-
-	public UrlAccess(UrlAccessDTO dto) throws UnknownHostException {
-		this.ip = InetAddress.getByName(dto.getIp()).getAddress();
-		this.browser = dto.getBrowser();
-		this.device = dto.getDevice();
-		this.accessTime = dto.getAccessTime();
-		this.link = new Link();
-		this.link.setId(dto.getLinkId());
 	}	
 
 }

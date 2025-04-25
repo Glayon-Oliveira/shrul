@@ -1,10 +1,9 @@
-package com.lmlasmo.shrul.dto.model;
+package com.lmlasmo.shrul.dto;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lmlasmo.shrul.dto.EmailDTO;
-import com.lmlasmo.shrul.model.User;
+import com.lmlasmo.shrul.dto.auth.EmailDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +23,5 @@ public class UserDTO extends EmailDTO{
 	
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
-
-	public UserDTO(User user) {		
-		this.setEmail(user.getEmail());
-		this.firstName = user.getFirstName();
-		this.lastName = user.getLastName();
-		this.createdAt = user.getCreatedAt();
-	}
 
 }

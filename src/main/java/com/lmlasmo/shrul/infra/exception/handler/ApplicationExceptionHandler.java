@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.lmlasmo.shrul.dto.error.ExceptionDTO;
+import com.lmlasmo.shrul.dto.exception.ExceptionDTO;
 import com.lmlasmo.shrul.infra.exception.DestineNotFoundException;
 import com.lmlasmo.shrul.infra.exception.EmailConfirmationException;
 import com.lmlasmo.shrul.infra.exception.InvalidPasswordException;

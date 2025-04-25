@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto;
+package com.lmlasmo.shrul.dto.auth;
 
 import java.time.LocalDateTime;
 
@@ -34,10 +34,8 @@ public class CodeHashDTO {
 	@Size(min = 6, max = 6)
 	private String code;	
 
-	public String getCodeAndSetNull() {
-		String code = this.code;
-		this.code = null;
-		return code;
+	public void cleanCode() {		
+		this.code = null;		
 	}	
 
 }

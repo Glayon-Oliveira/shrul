@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.lmlasmo.shrul.filter.JwtAuthenticationFilter;
+import com.lmlasmo.shrul.infra.security.filter.JwtAuthenticationFilter;
 import com.lmlasmo.shrul.infra.security.handler.AccessDeniedHandlerImpl;
 import com.lmlasmo.shrul.infra.security.handler.AuthenticationEntryPointImpl;
 

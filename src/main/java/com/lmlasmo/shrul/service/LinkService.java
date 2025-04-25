@@ -2,20 +2,25 @@ package com.lmlasmo.shrul.service;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.HexFormat;
 
+import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.model.LinkDTO;
+import com.lmlasmo.shrul.dto.LinkDTO;
+import com.lmlasmo.shrul.dto.register.RegisterLinkDTO;
+import com.lmlasmo.shrul.dto.update.LinkUpdateDTO;
 import com.lmlasmo.shrul.infra.exception.DestinationNotFoundException;
-import com.lmlasmo.shrul.dto.register.LinkUpdateDTO;
+
 import com.lmlasmo.shrul.infra.exception.SystemFailedException;
+import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
+import com.lmlasmo.shrul.mapper.LinkMapper;
 import com.lmlasmo.shrul.model.Link;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.LinkRepository;
-import com.lmlasmo.shrul.util.LinkCodeCreator;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -29,9 +34,10 @@ import lombok.Getter;
 public class LinkService {
 
 	private LinkRepository repository;	
+	private LinkMapper mapper;
 
-	public LinkDTO save(@Valid LinkDTO linkDTO) {
-		Link link = new Link(linkDTO);
+	public LinkDTO save(@Valid RegisterLinkDTO linkDTO) {
+		Link link = mapper.dtoToLink(linkDTO);
 
 		String id = "0000000000";
 
@@ -42,12 +48,12 @@ public class LinkService {
 			String destine = link.getDestination();
 			String now = LocalDateTime.now().toString();			
 			
-			id = LinkCodeCreator.create(prefixId, destine, now).toLowerCase();
+			id = createLinkCode(prefixId, destine, now).toLowerCase();
 
 		}while(repository.existsById(id));
 
 		link.setId(id);
-		return new LinkDTO(repository.save(link));
+		return mapper.linkToDTO(repository.save(link));
 	}
 
 
@@ -60,7 +66,7 @@ public class LinkService {
 		if(link == null) throw new EntityNotFoundException("Link not found");		
 		
 		link.setPrefix(prefix);
-		return new LinkDTO(repository.save(link));
+		return mapper.linkToDTO(repository.save(link));
 	}
 
 	public void delete(String id) {
@@ -72,7 +78,7 @@ public class LinkService {
 	}
 
 	public LinkDTO findById(String id) {
-		LinkDTO link = repository.findById(id).map(l -> new LinkDTO(l)).orElseGet(() -> null);
+		LinkDTO link = repository.findById(id).map(l -> mapper.linkToDTO(l)).orElseGet(() -> null);
 
 		if(link == null) throw new DestinationNotFoundException("Link not found");		
 
@@ -80,11 +86,11 @@ public class LinkService {
 	}
 
 	public Page<LinkDTO> findByUser(BigInteger userId, Pageable pageable) {
-		return repository.findByPrefixUserId(userId, pageable).map(l -> new LinkDTO(l));
+		return repository.findByPrefixUserId(userId, pageable).map(l -> mapper.linkToDTO(l));
 	}
 
 	public Page<LinkDTO> findByPrefix(BigInteger id, Pageable pageable) {
-		return repository.findByPrefixId(id, pageable).map(l -> new LinkDTO(l));
+		return repository.findByPrefixId(id, pageable).map(l -> mapper.linkToDTO(l));
 	}
 
 	public String getDestination(String id) {
@@ -101,6 +107,28 @@ public class LinkService {
 		if(link == null) throw new DestinationNotFoundException("Link not found");		
 
 		return link.getDestination();
+	}
+	
+	public boolean existsByIdAndUser(String linkId, BigInteger userId) {
+		return repository.existsByIdAndPrefixUserId(linkId, userId);
+	}
+	
+	public boolean existsByIdAndAuth(String linkId) {
+		return repository.existsByIdAndPrefixUserId(linkId, AuthenticatedUser.getUserId());
+	}
+	
+	public static String createLinkCode(String... values) {
+		String compilation = String.join("", values);
+
+		Blake2bDigest digest = new Blake2bDigest(40);
+
+		byte[] compilationBytes = compilation.getBytes();
+		digest.update(compilationBytes, 0, compilationBytes.length);
+
+		byte[] hash = new byte[digest.getDigestSize()];
+		digest.doFinal(hash, 0);
+
+		return HexFormat.of().formatHex(hash);
 	}
 
 }
