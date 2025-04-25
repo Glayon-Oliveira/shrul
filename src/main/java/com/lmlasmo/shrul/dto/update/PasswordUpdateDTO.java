@@ -1,8 +1,8 @@
-package com.lmlasmo.shrul.dto.register;
+package com.lmlasmo.shrul.dto.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lmlasmo.shrul.dto.CodeHashDTO;
-import com.lmlasmo.shrul.dto.EmailDTO;
+import com.lmlasmo.shrul.dto.auth.CodeHashDTO;
+import com.lmlasmo.shrul.dto.auth.EmailDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

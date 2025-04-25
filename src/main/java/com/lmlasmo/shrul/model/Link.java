@@ -3,8 +3,6 @@ package com.lmlasmo.shrul.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.lmlasmo.shrul.dto.model.LinkDTO;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,12 +37,6 @@ public class Link {
 	private Prefix prefix;
 
 	@OneToMany(mappedBy = "link", cascade = CascadeType.REMOVE)
-	private Set<UrlAccess> access = new HashSet<>();	
-
-	public Link(LinkDTO linkDTO) {
-		this.destination = linkDTO.getDestination();
-		this.prefix = new Prefix();
-		this.prefix.setId(linkDTO.getPrefix());
-	}	
+	private Set<UrlAccess> access = new HashSet<>();
 
 }

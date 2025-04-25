@@ -2,8 +2,8 @@ package com.lmlasmo.shrul.infra.exception.util;
 
 import org.springframework.http.HttpStatus;
 
-import com.lmlasmo.shrul.dto.error.ErrorMessageDTO;
-import com.lmlasmo.shrul.dto.error.ExceptionDTO;
+import com.lmlasmo.shrul.dto.exception.ErrorMessageDTO;
+import com.lmlasmo.shrul.dto.exception.ExceptionDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.dto.error;
+package com.lmlasmo.shrul.dto.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

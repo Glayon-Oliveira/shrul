@@ -7,13 +7,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lmlasmo.shrul.dto.model.UserDTO;
+import com.lmlasmo.shrul.dto.UserDTO;
 import com.lmlasmo.shrul.dto.register.DeleteAccountDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
-import com.lmlasmo.shrul.dto.register.UserUpdateDTO;
+import com.lmlasmo.shrul.dto.update.UserUpdateDTO;
 import com.lmlasmo.shrul.infra.exception.ActionFailedException;
 import com.lmlasmo.shrul.infra.exception.InvalidPasswordException;
 import com.lmlasmo.shrul.infra.exception.UnchangedFieldException;
+import com.lmlasmo.shrul.mapper.UserMapper;
 import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.UserRepository;
@@ -30,19 +31,20 @@ import lombok.Getter;
 public class UserService {
 
 	private UserRepository repository;
-	private PasswordEncoder encoder;	
+	private PasswordEncoder encoder;
+	private UserMapper mapper;
 
 	public UserDTO save(SignupDTO signup) {
 		if (repository.existsByEmail(signup.getEmail())) throw new EntityExistsException("Email is not available");		
-
-		User user = new User(signup);
+				
+		User user = mapper.dtoToUser(signup);
 		user.setPassword(encoder.encode(signup.getPassword()));
 
 		Prefix prefix = new Prefix();
 		prefix.setUser(user);
 		user.getPrefixes().add(prefix);
 	
-		return new UserDTO(repository.save(user));
+		return mapper.userToDTO(repository.save(user));
 	}
 
 	public void delete(DeleteAccountDTO delete, BigInteger id) {
@@ -73,7 +75,7 @@ public class UserService {
 
 		if (lastName) user.setLastName(update.getLastName());
 
-		return new UserDTO(repository.save(user));
+		return mapper.userToDTO(repository.save(user));
 	}
 
 	public UserDTO updatePassword(BigInteger userId, String password) {
@@ -92,7 +94,7 @@ public class UserService {
 		if(user.getPassword().equals(password)) throw new UnchangedFieldException("Password used");
 
 		user.setPassword(encoder.encode(password));
-		return new UserDTO(repository.save(user));
+		return mapper.userToDTO(repository.save(user));
 	}
 
 	public void setLocked(BigInteger id, boolean locked) {

@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.filter;
+package com.lmlasmo.shrul.infra.security.filter;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.lmlasmo.shrul.model.User;
 import com.lmlasmo.shrul.repository.UserRepository;
-import com.lmlasmo.shrul.service.JwtService;
+import com.lmlasmo.shrul.service.auth.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

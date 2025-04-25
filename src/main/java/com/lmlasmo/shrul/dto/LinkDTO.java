@@ -1,8 +1,9 @@
 package com.lmlasmo.shrul.dto;
 
+import java.math.BigInteger;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class JwtTokenDTO {
+public class LinkDTO {
 
-	@JsonProperty("jwt_token")
-	private String jwtToken;
+	@JsonProperty
+	private String id;
+
+	@JsonProperty	
+	private String destination;
+	
+	@JsonProperty("prefix_id")
+	private BigInteger prefixId;
 
 }

@@ -1,27 +1,26 @@
-package com.lmlasmo.shrul.util;
+package com.lmlasmo.shrul.service.auth;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.lmlasmo.shrul.dto.CodeHashDTO;
+import com.lmlasmo.shrul.dto.auth.CodeHashDTO;
 import com.lmlasmo.shrul.infra.exception.EmailConfirmationException;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Component
-public class EmailCodeTool {
-
-	@Value("${EMAIL_CONFIRMATION_KEY}")
-	private String key;
-
+public class EmailCodeService {
+	
 	public static final int EXPIRES_MINUTES = 5;
+	
+	private String key = UUID.randomUUID().toString();	
 	private AtomicLong logicKey = new AtomicLong(0);	
 
 	private byte somaByte(long value) {
