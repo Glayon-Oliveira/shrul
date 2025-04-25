@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lmlasmo.shrul.dto.model.UrlAccessDTO;
-import com.lmlasmo.shrul.service.AccessVerifyService;
+import com.lmlasmo.shrul.dto.UrlAccessDTO;
+import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.service.UrlAccessService;
 
 import lombok.AllArgsConstructor;
@@ -26,19 +26,19 @@ public class UrlAccessController {
 	@GetMapping("/week")
 	@ResponseBody
 	public Page<UrlAccessDTO> findByLastWeek(Pageable pageable){
-		return service.findByLastWeek(AccessVerifyService.getUserId(), pageable);
+		return service.findByLastWeek(AuthenticatedUser.getUserId(), pageable);
 	}
 
 	@GetMapping("/month")
 	@ResponseBody
 	public Page<UrlAccessDTO> findByLastMonth(Pageable pageable){
-		return service.findByLastMonth(AccessVerifyService.getUserId(), pageable);		
+		return service.findByLastMonth(AuthenticatedUser.getUserId(), pageable);		
 	}
 
 	@GetMapping("/all")
 	@ResponseBody
 	public Page<UrlAccessDTO> findAll(Pageable pageable){
-		return service.findAll(AccessVerifyService.getUserId(), pageable);		
+		return service.findAll(AuthenticatedUser.getUserId(), pageable);		
 	}
 
 }

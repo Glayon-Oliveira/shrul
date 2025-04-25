@@ -11,8 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.lmlasmo.shrul.dto.register.SignupDTO;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,13 +67,7 @@ public class User implements UserDetails{
 	private UserRole role = UserRole.ROLE_USER;
 
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Set<Prefix> prefixes = new HashSet<>();
-
-	public User(SignupDTO signup) {
-		this.email = signup.getEmail();		
-		this.firstName = signup.getFirstName();
-		this.lastName = signup.getLastName();
-	}	
+	private Set<Prefix> prefixes = new HashSet<>();	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

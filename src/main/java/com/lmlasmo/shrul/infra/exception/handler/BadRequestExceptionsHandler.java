@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.lmlasmo.shrul.dto.error.ErrorMessageDTO;
-import com.lmlasmo.shrul.dto.error.ExceptionDTO;
+import com.lmlasmo.shrul.dto.exception.ErrorMessageDTO;
+import com.lmlasmo.shrul.dto.exception.ExceptionDTO;
 import com.lmlasmo.shrul.infra.exception.ActionFailedException;
 import com.lmlasmo.shrul.infra.exception.util.ExceptionDTOFactory;
 
@@ -38,6 +38,6 @@ public class BadRequestExceptionsHandler {
 	public ExceptionDTO handleBadRequestExceptions(HttpMessageNotReadableException exception, HttpServletRequest request){
 		String message = "The requisition body is malformed, missing, or in invalid form.";
 		return ExceptionDTOFactory.getExceptionDTO(request, message);		
-	}	
-
+	}
+	
 }

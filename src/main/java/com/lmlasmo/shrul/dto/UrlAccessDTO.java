@@ -1,11 +1,8 @@
-package com.lmlasmo.shrul.dto.model;
+package com.lmlasmo.shrul.dto;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lmlasmo.shrul.model.UrlAccess;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +28,7 @@ public class UrlAccessDTO {
 	@JsonProperty("access_time")
 	private LocalDateTime accessTime;	
 
-	public UrlAccessDTO(UrlAccess access) {
+	/*public UrlAccessDTO(UrlAccess access) {
 		this.linkId = access.getLink().getId();
 		this.browser = access.getBrowser();
 		this.device = access.getDevice();
@@ -41,6 +38,6 @@ public class UrlAccessDTO {
 		} catch (UnknownHostException e) {
 			this.ip = "000.000.000";
 		}
-	}
+	}*/
 
 }

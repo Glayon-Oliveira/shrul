@@ -1,4 +1,4 @@
-package com.lmlasmo.shrul.service;
+package com.lmlasmo.shrul.service.auth;
 
 import java.util.Date;
 import java.util.List;
@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 @Service
 public class JwtService {
 
-	@Value("${SHRUL_JWT_KEY}")
+	@Value("app.jwt.key")
 	private String JWT_KEY;
 
-	@Value("${SHRUL_JWT_ISSUER}")
+	@Value("app.jwt.issuer")
 	private String ISSUER;
 
 	public String gerateToken(String email, List<String> roles) {
