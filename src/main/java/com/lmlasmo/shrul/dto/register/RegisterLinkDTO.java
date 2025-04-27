@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import org.hibernate.validator.constraints.URL;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Min;
@@ -23,7 +24,8 @@ public class RegisterLinkDTO {
 	@URL
 	private String destine;
 
-	@JsonProperty("prefix_id")
+	@JsonProperty("prefixId")
+	@JsonAlias("prefix_id")
 	@NotNull
 	@Min(1)
 	private BigInteger prefixId;

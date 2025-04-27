@@ -62,7 +62,7 @@ public class UserController{
 	@PostMapping("/signup")
 	@ResponseBody
 	public UserDTO signup(@RequestBody @Valid SignupDTO signup){
-		CodeHashDTO codeHash = signup.getHashCode();
+		CodeHashDTO codeHash = signup.getCodeHash();
 		emailCodeService.confirm(signup.getEmail(), codeHash);
 		return userService.save(signup);
 	}
@@ -87,7 +87,7 @@ public class UserController{
 
 	@DeleteMapping	
 	public Void delete(@RequestBody @Valid DeleteAccountDTO delete){
-		emailCodeService.confirm(AuthenticatedUser.getUserEmail(), delete.getHashCode());
+		emailCodeService.confirm(AuthenticatedUser.getUserEmail(),  delete.getCodeHash());
 		userService.delete(delete, AuthenticatedUser.getUserId());
 		return null;
 	}

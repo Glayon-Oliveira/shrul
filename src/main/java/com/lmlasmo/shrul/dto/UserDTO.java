@@ -2,6 +2,7 @@ package com.lmlasmo.shrul.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.dto.auth.EmailDTO;
 
@@ -15,13 +16,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO extends EmailDTO{	
 
-	@JsonProperty("first_name")		
+	@JsonProperty("firstName")
+	@JsonAlias("first_name")
 	private String firstName;
 
-	@JsonProperty("last_name")
+	@JsonProperty("lastName")
+	@JsonAlias("last_name")
 	private String lastName;
-	
-	@JsonProperty("created_at")
+
+	@JsonProperty("createdAt")
+	@JsonAlias("create_at")
 	private LocalDateTime createdAt;
 
 }
