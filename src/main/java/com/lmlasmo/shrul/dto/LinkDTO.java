@@ -2,6 +2,7 @@ package com.lmlasmo.shrul.dto;
 
 import java.math.BigInteger;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -18,8 +19,9 @@ public class LinkDTO {
 
 	@JsonProperty	
 	private String destination;
-	
-	@JsonProperty("prefix_id")
+
+	@JsonProperty("prefixId")
+	@JsonAlias("prefix_id")
 	private BigInteger prefixId;
 
 }

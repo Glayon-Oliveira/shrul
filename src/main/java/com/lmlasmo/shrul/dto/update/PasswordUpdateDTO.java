@@ -1,5 +1,6 @@
 package com.lmlasmo.shrul.dto.update;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.dto.auth.CodeHashDTO;
 import com.lmlasmo.shrul.dto.auth.EmailDTO;
@@ -21,7 +22,8 @@ public class PasswordUpdateDTO extends EmailDTO{
 	@Size(min = 8, max = 255)
 	private String password;
 
-	@JsonProperty("code_hash")
+	@JsonProperty("codeHash")
+	@JsonAlias("code_hash")
 	@NotNull
 	private CodeHashDTO codeHash;
 
