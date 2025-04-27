@@ -1,5 +1,6 @@
 package com.lmlasmo.shrul.dto.update;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Pattern;
@@ -13,12 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserUpdateDTO {
 
-	@JsonProperty(value = "first_name", required = false)
+	@JsonProperty(value = "firstName", required = false)
+	@JsonAlias("first_name")
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String firstName;
-	
-	@JsonProperty(value = "last_name", required = false)
+
+	@JsonProperty(value = "lastName", required = false)
+	@JsonAlias("last_name")
 	@Size(min = 1)
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;

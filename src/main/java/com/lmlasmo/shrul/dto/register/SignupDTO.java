@@ -1,5 +1,6 @@
 package com.lmlasmo.shrul.dto.register;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lmlasmo.shrul.dto.auth.CodeHashDTO;
 
@@ -15,20 +16,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SignupDTO extends LoginDTO{
-	
-	@JsonProperty("first_name")	
+
+	@JsonProperty("firstName")
+	@JsonAlias("first_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String firstName;
-	
-	@JsonProperty("last_name")
+
+	@JsonProperty("lastName")
+	@JsonAlias("last_name")
 	@NotBlank
 	@Pattern(regexp = "^(?!\s).*[^\\s]$")
 	private String lastName;
 
-	@JsonProperty("hash_code")
+	@JsonProperty("codeHash")
+	@JsonAlias("code_hash")
 	@NotNull
 	@Valid
-	private CodeHashDTO hashCode;
+	private CodeHashDTO codeHash;
 
 }

@@ -2,6 +2,7 @@ package com.lmlasmo.shrul.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -13,7 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UrlAccessDTO {
 
-	@JsonProperty("link_id")
+	@JsonProperty("linkId")
+	@JsonAlias("link_id")
 	private String linkId;
 
 	@JsonProperty
@@ -25,7 +27,8 @@ public class UrlAccessDTO {
 	@JsonProperty
 	private String device;
 
-	@JsonProperty("access_time")
+	@JsonProperty("accessTime")
+	@JsonAlias("access_time")
 	private LocalDateTime accessTime;	
 
 	/*public UrlAccessDTO(UrlAccess access) {
