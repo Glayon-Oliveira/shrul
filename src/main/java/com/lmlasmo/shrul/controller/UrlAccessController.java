@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @ResponseStatus(code = HttpStatus.OK)
 public class UrlAccessController {
 
-	private UrlAccessService service;	
+	private UrlAccessService service;
 
 	@GetMapping("/week")
 	@ResponseBody
@@ -32,13 +32,13 @@ public class UrlAccessController {
 	@GetMapping("/month")
 	@ResponseBody
 	public Page<UrlAccessDTO> findByLastMonth(Pageable pageable){
-		return service.findByLastMonth(AuthenticatedUser.getUserId(), pageable);		
+		return service.findByLastMonth(AuthenticatedUser.getUserId(), pageable);
 	}
 
-	@GetMapping("/all")
+	@GetMapping
 	@ResponseBody
 	public Page<UrlAccessDTO> findAll(Pageable pageable){
-		return service.findAll(AuthenticatedUser.getUserId(), pageable);		
+		return service.findAll(AuthenticatedUser.getUserId(), pageable);
 	}
 
 }

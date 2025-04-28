@@ -20,8 +20,9 @@ public class LowExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ExceptionDTO handleInternalServerExceptions(Exception exception, HttpServletRequest request) {		
-		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR, request);		
+	public ExceptionDTO handleInternalServerExceptions(Exception exception, HttpServletRequest request) {
+		exception.printStackTrace();
+		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
-	
+
 }

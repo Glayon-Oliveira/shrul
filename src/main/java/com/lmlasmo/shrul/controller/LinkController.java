@@ -24,6 +24,8 @@ import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.service.LinkService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -35,10 +37,10 @@ public class LinkController {
 	private LinkService service;
 
 	@PostMapping
-	@ResponseBody	
+	@ResponseBody
 	@PreAuthorize("@prefixService.existsByIdAndAuth(#link.prefixId)")
 	public LinkDTO register(@RequestBody @Valid RegisterLinkDTO link){
-		return service.save(link);		
+		return service.save(link);
 	}
 
 	@PutMapping
@@ -50,7 +52,7 @@ public class LinkController {
 
 	@DeleteMapping
 	@PreAuthorize("@linkService.existsByIdAndAuth(#id)")
-	public Void delete(@RequestParam String id){
+	public Void delete(@RequestParam @NotBlank @Size(min = 10, max = 10) String id){
 		service.delete(id.toLowerCase());
 		return null;
 	}
@@ -58,14 +60,14 @@ public class LinkController {
 	@GetMapping
 	@ResponseBody
 	public Page<LinkDTO> findByUser(Pageable pageable){
-		return service.findByUser(AuthenticatedUser.getUserId(), pageable);		
+		return service.findByUser(AuthenticatedUser.getUserId(), pageable);
 	}
 
 	@GetMapping(params = "prefix")
 	@ResponseBody
 	@PreAuthorize("@prefixService.existsByIdAndAuth(#id)")
 	public Page<LinkDTO> findByPrefix(@RequestParam("prefix") BigInteger id, Pageable pageable){
-		return service.findByPrefix(id, pageable);		
+		return service.findByPrefix(id, pageable);
 	}
 
 }

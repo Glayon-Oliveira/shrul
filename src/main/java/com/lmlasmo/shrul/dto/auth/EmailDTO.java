@@ -16,7 +16,7 @@ public class EmailDTO {
 	@JsonProperty
 	@Email
 	@NotBlank
-	private String email;	
+	private String email;
 
 	public void setEmail(String email) {
 		this.email = email.toUpperCase();

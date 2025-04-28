@@ -24,6 +24,7 @@ import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.service.PrefixService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -32,36 +33,36 @@ import lombok.AllArgsConstructor;
 @ResponseStatus(code = HttpStatus.OK)
 public class PrefixController {
 
-	private PrefixService service;	
+	private PrefixService service;
 
 	@PostMapping
-	@ResponseBody	
-	public PrefixDTO register(@RequestBody @Valid RegisterPrefixDTO prefix){		
+	@ResponseBody
+	public PrefixDTO register(@RequestBody @Valid RegisterPrefixDTO prefix){
 		return service.save(prefix, AuthenticatedUser.getUserId());
 	}
 
 	@PutMapping
 	@ResponseBody
-	@PreAuthorize("@prefixService.existsByIdAndAuth(#update.id)")	
+	@PreAuthorize("@prefixService.existsByIdAndAuth(#update.id)")
 	public PrefixDTO update(@RequestBody @Valid PrefixUpdateDTO update){
-		return service.update(update);		
+		return service.update(update);
 	}
 
-	@DeleteMapping	
+	@DeleteMapping
 	@PreAuthorize("@prefixService.existsByIdAndAuth(#id)")
-	public Void delete(@RequestParam BigInteger id){
+	public Void delete(@RequestParam @Min(1) BigInteger id){
 		service.delete(id);
 		return null;
 	}
 
 	@GetMapping("/empty")
-	@ResponseBody	
+	@ResponseBody
 	public PrefixDTO findEmptyPrefix(){
 		return service.findByEmptyPrefix(AuthenticatedUser.getUserId());
 	}
 
 	@GetMapping
-	@ResponseBody	
+	@ResponseBody
 	public Page<PrefixDTO> findPrefixes(Pageable pageable){
 		return service.findByUser(AuthenticatedUser.getUserId(), pageable);
 	}

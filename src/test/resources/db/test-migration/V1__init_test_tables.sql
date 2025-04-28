@@ -1,0 +1,46 @@
+CREATE TABLE users(
+
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	created_at DATE NOT NULL,
+	locked BIT NOT NULL DEFAULT 0,
+	role VARCHAR(30) NOT NULL,
+	status VARCHAR(30) NOT NULL,	
+	
+	PRIMARY KEY(id)	
+);
+
+CREATE TABLE prefixes(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	user_id BIGINT NOT NULL,
+	prefix VARCHAR(20) NULL UNIQUE,
+	
+	PRIMARY KEY(id),	
+	CONSTRAINT prefixes_ibfk_1 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE links(
+	id VARCHAR(10) NOT NULL,
+	prefix_id BIGINT NOT NULL,
+	destination VARCHAR(2048) NOT NULL,
+			
+	PRIMARY KEY(id),
+	CONSTRAINT links_ibfk_1 FOREIGN KEY(prefix_id) REFERENCES prefixes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE url_access(
+
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	id_link VARCHAR(10) NOT NULL,
+	ip VARBINARY(16) NOT NULL,
+	browser VARCHAR(50),	
+	device VARCHAR(15),
+	access_time DATETIME NOT NULL,
+	expiration_date DATE NOT NULL,	
+	
+	PRIMARY KEY(id),
+	CONSTRAINT url_access_ibfk_1 FOREIGN KEY(id_link) REFERENCES links(id) ON DELETE CASCADE
+);

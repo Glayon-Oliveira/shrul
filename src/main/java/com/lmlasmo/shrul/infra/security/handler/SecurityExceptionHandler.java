@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,8 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @ResponseBody
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SecurityExceptionHandler {
-	
-	@ExceptionHandler(BadCredentialsException.class)
+
+	@ExceptionHandler(AuthenticationException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public ExceptionDTO handleUnauthorizedExceptions(BadCredentialsException exception, HttpServletRequest request){
 		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.UNAUTHORIZED, request, exception);
@@ -28,8 +29,8 @@ public class SecurityExceptionHandler {
 
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(code = HttpStatus.FORBIDDEN)
-	public ExceptionDTO accessDeniedException(AccessDeniedException exception, HttpServletRequest request) {
+	public ExceptionDTO handleForbiddenExceptions(AccessDeniedException exception, HttpServletRequest request){
 		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.FORBIDDEN, request, exception);
 	}
-	
+
 }

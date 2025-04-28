@@ -17,11 +17,11 @@ import lombok.Setter;
 public class ErrorMessageDTO {
 
 	@JsonProperty
-	@JsonInclude(value = Include.NON_NULL)	
+	@JsonInclude(value = Include.NON_NULL)
 	private String cause;
 
 	@JsonProperty
 	@NonNull
-	private String message;	
+	private String message;
 
 }

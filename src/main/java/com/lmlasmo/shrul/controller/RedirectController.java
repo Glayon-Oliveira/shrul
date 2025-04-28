@@ -3,6 +3,7 @@ package com.lmlasmo.shrul.controller;
 import java.net.UnknownHostException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +22,11 @@ import lombok.AllArgsConstructor;
 public class RedirectController {
 
 	private LinkService service;
-	private UrlAccessService accessService;	
-	
+	private UrlAccessService accessService;
+
 	@RequestMapping("/**")
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public Void notFound(){		
+	public Void notFound(){
 		return null;
 	}
 
@@ -33,14 +34,18 @@ public class RedirectController {
 	public RedirectView redirect(@PathVariable String id, HttpServletRequest request) throws UnknownHostException{
 		String destine = service.getDestination(id.toLowerCase());
 		accessService.save(id, request);
-		return new RedirectView(destine);
+		RedirectView redirect = new RedirectView(destine);
+		redirect.setStatusCode(HttpStatusCode.valueOf(303));
+		return redirect;
 	}
 
 	@GetMapping("/{prefix}/{id}")
 	public RedirectView redirect(@PathVariable String id, @PathVariable String prefix, HttpServletRequest request) throws UnknownHostException{
 		String destine = service.getDestination(id.toLowerCase(), prefix.toLowerCase());
 		accessService.save(id, request);
-		return new RedirectView(destine);
+		RedirectView redirect = new RedirectView(destine);
+		redirect.setStatusCode(HttpStatusCode.valueOf(303));
+		return redirect;
 	}
 
 }

@@ -27,16 +27,16 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPointImpl entryPoint,
 			AccessDeniedHandlerImpl deniedHandler, JwtAuthenticationFilter jwtFilter) throws Exception {
 		return http.csrf(c -> c.disable())
-				   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				   .formLogin(f -> f.disable())
-				   .httpBasic(Customizer.withDefaults())
-				   .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)
-						   .accessDeniedHandler(deniedHandler))
-				   .authorizeHttpRequests(a -> a.requestMatchers("/user/login", "/user/signup", "/user/send_code", "/user/password").permitAll()
-						   .requestMatchers("/user/**", "/prefix/**", "/link/**", "/url_access/**").authenticated()
-						   .anyRequest().permitAll())
-				   .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
-				   .build();
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.formLogin(f -> f.disable())
+				.httpBasic(Customizer.withDefaults())
+				.exceptionHandling(e -> e.authenticationEntryPoint(entryPoint)
+						.accessDeniedHandler(deniedHandler))
+				.authorizeHttpRequests(a -> a.requestMatchers("/api/user/login", "/api/user/signup", "/api/user/send_code", "/api/user/password").permitAll()
+						.requestMatchers("/api/**").authenticated()
+						.anyRequest().permitAll())
+				.addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
+				.build();
 	}
 
 	@Bean

@@ -22,25 +22,23 @@ import lombok.AllArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private UserRepository repository;
-	private JwtService jwtService;	
+	private JwtService jwtService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String token = findToken(request);
 
-		if(token != null) authenticate(token);		
+		if(token != null) authenticate(token);
 
 		filterChain.doFilter(request, response);
 	}
 
 	private void authenticate(String token) {
 		User user = findUser(token);
-		
-		if(user == null) return;					
 
-		if(!isAuthenticationPermited(user)) return;
-		
+		if((user == null) || !isAuthenticationPermited(user)) return;
+
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 	}
@@ -48,10 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private String findToken(HttpServletRequest request) {
 		String auth = request.getHeader("Authorization");
 
-		if(auth == null) return null;
+		if((auth == null) || !auth.contains("Bearer")) return null;
 
-		if(!auth.contains("Bearer")) return null;
-		
 		auth = auth.replace("Bearer", "");
 		auth = auth.replace(" ", "");
 		return auth;
@@ -59,9 +55,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private User findUser(String token) {
 		String email = jwtService.getEmail(token);
-		
+
 		if(email == null) return null;
-		
+
 		return repository.findByEmail(email).orElseGet(() -> null);
 	}
 

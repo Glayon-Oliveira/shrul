@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @Component
 @AllArgsConstructor
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
-	
+
 	private ExceptionResponseWriter responseWriter;
 
 	@Override

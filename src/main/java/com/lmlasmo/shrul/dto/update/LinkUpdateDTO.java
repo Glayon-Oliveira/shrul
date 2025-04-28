@@ -25,6 +25,6 @@ public class LinkUpdateDTO {
 	@JsonProperty
 	@NotNull
 	@Min(1)
-	private BigInteger prefix;
+	private BigInteger prefixId;
 
 }

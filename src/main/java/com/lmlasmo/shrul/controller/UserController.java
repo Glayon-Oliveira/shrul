@@ -47,7 +47,7 @@ public class UserController{
 	private JwtService jwtService;
 	private EmailService emailService;
 	private EmailCodeService emailCodeService;
-	private AuthenticationManager manager;	
+	private AuthenticationManager manager;
 
 	@PostMapping("/login")
 	@ResponseBody
@@ -74,7 +74,7 @@ public class UserController{
 		CodeHashDTO codeHash = emailCodeService.create(email);
 		String code = codeHash.getCode();
 		codeHash.cleanCode();
-		
+
 		emailService.send(email, "Confirmar Conta", code);
 		return codeHash;
 	}
@@ -82,12 +82,12 @@ public class UserController{
 	@PutMapping
 	@ResponseBody
 	public UserDTO update(@RequestBody @Valid UserUpdateDTO update){
-		return userService.update(update, AuthenticatedUser.getUserId());				
+		return userService.update(update, AuthenticatedUser.getUserId());
 	}
 
-	@DeleteMapping	
+	@DeleteMapping
 	public Void delete(@RequestBody @Valid DeleteAccountDTO delete){
-		emailCodeService.confirm(AuthenticatedUser.getUserEmail(),  delete.getCodeHash());
+		emailCodeService.confirm(AuthenticatedUser.getUserEmail(), delete.getCodeHash());
 		userService.delete(delete, AuthenticatedUser.getUserId());
 		return null;
 	}
@@ -96,10 +96,10 @@ public class UserController{
 	@ResponseBody
 	public UserDTO updatePassword(@RequestBody @Valid PasswordUpdateDTO update){
 		emailCodeService.confirm(update.getEmail(), update.getCodeHash());
-		return userService.updatePassword(update.getEmail(), update.getPassword());		
+		return userService.updatePassword(update.getEmail(), update.getPassword());
 	}
 
-	@PutMapping("/lock")	
+	@PutMapping("/lock")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Void setLocked(@RequestParam BigInteger id, @RequestParam boolean locked){
 		userService.setLocked(id, locked);
@@ -109,6 +109,7 @@ public class UserController{
 	@GetMapping
 	@ResponseBody
 	public UserDTO getUser(){
+		System.out.println(AuthenticatedUser.getUser());
 		return userService.getMapper().userToDTO(AuthenticatedUser.getUser());
 	}
 

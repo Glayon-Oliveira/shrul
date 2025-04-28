@@ -11,7 +11,6 @@ import com.lmlasmo.shrul.dto.UserDTO;
 import com.lmlasmo.shrul.dto.register.DeleteAccountDTO;
 import com.lmlasmo.shrul.dto.register.SignupDTO;
 import com.lmlasmo.shrul.dto.update.UserUpdateDTO;
-import com.lmlasmo.shrul.infra.exception.ActionFailedException;
 import com.lmlasmo.shrul.infra.exception.InvalidPasswordException;
 import com.lmlasmo.shrul.infra.exception.UnchangedFieldException;
 import com.lmlasmo.shrul.mapper.UserMapper;
@@ -35,15 +34,15 @@ public class UserService {
 	private UserMapper mapper;
 
 	public UserDTO save(SignupDTO signup) {
-		if (repository.existsByEmail(signup.getEmail())) throw new EntityExistsException("Email is not available");		
-				
+		if (repository.existsByEmail(signup.getEmail())) throw new EntityExistsException("Email is not available");
+
 		User user = mapper.dtoToUser(signup);
 		user.setPassword(encoder.encode(signup.getPassword()));
 
 		Prefix prefix = new Prefix();
 		prefix.setUser(user);
 		user.getPrefixes().add(prefix);
-	
+
 		return mapper.userToDTO(repository.save(user));
 	}
 
@@ -57,8 +56,6 @@ public class UserService {
 		if(!confirm) throw new InvalidPasswordException("Invalid password");
 
 		repository.delete(user);
-
-		if(repository.existsById(id)) throw new ActionFailedException("User not deleted");
 	}
 
 	public UserDTO update(UserUpdateDTO update, BigInteger id) {
@@ -66,12 +63,12 @@ public class UserService {
 
 		if (user == null) throw new EntityNotFoundException("User not found");
 
-		if (update.getFirstName() == null && update.getLastName() == null) return null;
+		if (update.getFirstName() == null && update.getLastName() == null) mapper.userToDTO(user);
 
-		boolean fistName = update.getFirstName() != null && !user.getFirstName().equalsIgnoreCase(update.getFirstName());
-		boolean lastName = update.getLastName() != null && !user.getLastName().equalsIgnoreCase(update.getLastName());						
+		boolean firstName = update.getFirstName() != null && !user.getFirstName().equalsIgnoreCase(update.getFirstName());
+		boolean lastName = update.getLastName() != null && !user.getLastName().equalsIgnoreCase(update.getLastName());
 
-		if (fistName) user.setFirstName(update.getFirstName());
+		if (firstName) user.setFirstName(update.getFirstName());
 
 		if (lastName) user.setLastName(update.getLastName());
 
@@ -89,9 +86,9 @@ public class UserService {
 	}
 
 	private UserDTO updatePassword(User user, String password) {
-		if(user == null) throw new EntityNotFoundException("User not found");		
+		if(user == null) throw new EntityNotFoundException("User not found");
 
-		if(user.getPassword().equals(password)) throw new UnchangedFieldException("Password used");
+		if(encoder.matches(password, user.getPassword())) throw new UnchangedFieldException("Password used");
 
 		user.setPassword(encoder.encode(password));
 		return mapper.userToDTO(repository.save(user));
@@ -101,7 +98,7 @@ public class UserService {
 		User user = repository.findById(id).orElseGet(() -> null);
 
 		if (user == null) throw new EntityNotFoundException("User not found");
-		
+
 		if(user.isLocked() == locked) throw new UnchangedFieldException("User is locked");
 
 		user.setLocked(locked);
