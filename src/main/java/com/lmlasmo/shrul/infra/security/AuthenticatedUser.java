@@ -12,9 +12,8 @@ public interface AuthenticatedUser {
 		User user = getUser();
 		if(user != null) {
 			return user.getId();
-		}else {
-			return null;
-		}		
+		}
+		return null;
 	}
 
 	public static User getUser() {
@@ -22,16 +21,15 @@ public interface AuthenticatedUser {
 			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}catch(Exception e) {
 			return null;
-		}		
+		}
 	}
-	
-	public static String getUserEmail() {		
+
+	public static String getUserEmail() {
 		User user = getUser();
 		if(user != null) {
 			return user.getEmail();
-		}else {
-			return null;
 		}
+		return null;
 	}
-	
+
 }

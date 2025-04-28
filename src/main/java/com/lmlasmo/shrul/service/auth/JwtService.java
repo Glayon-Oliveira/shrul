@@ -29,12 +29,12 @@ public class JwtService {
 		Date expires = new Date(System.currentTimeMillis()+60*60*1000);
 
 		return JWT.create()
-				  .withIssuer(ISSUER)
-				  .withSubject(email)
-				  .withIssuedAt(issued)
-				  .withExpiresAt(expires)
-				  .withClaim("roles", roles)
-				  .sign(algorithm);
+				.withIssuer(ISSUER)
+				.withSubject(email)
+				.withIssuedAt(issued)
+				.withExpiresAt(expires)
+				.withClaim("roles", roles)
+				.sign(algorithm);
 	}
 
 	public boolean isTokenValid(String token) {
@@ -44,8 +44,8 @@ public class JwtService {
 			DecodedJWT jwt = JWT.decode(token);
 
 			JWTVerifier verify = JWT.require(algorithm)
-									 .withIssuer(ISSUER)
-									 .build();
+					.withIssuer(ISSUER)
+					.build();
 
 			verify.verify(jwt);
 			return true;

@@ -32,10 +32,10 @@ public class CodeHashDTO {
 	@JsonProperty
 	@NotBlank
 	@Size(min = 6, max = 6)
-	private String code;	
+	private String code;
 
-	public void cleanCode() {		
-		this.code = null;		
-	}	
+	public void cleanCode() {
+		this.code = null;
+	}
 
 }

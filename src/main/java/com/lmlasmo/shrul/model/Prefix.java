@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,11 +38,12 @@ public class Prefix {
 	@Column
 	private String prefix;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "user_id")
 	private User user;
 
 	@OneToMany(mappedBy = "prefix", cascade = CascadeType.REMOVE)
+	@OrderBy("id ASC")
 	private Set<Link> links = new HashSet<>();
 
 }

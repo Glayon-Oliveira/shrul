@@ -17,7 +17,7 @@ public class LinkDTO {
 	@JsonProperty
 	private String id;
 
-	@JsonProperty	
+	@JsonProperty
 	private String destination;
 
 	@JsonProperty("prefixId")

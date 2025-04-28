@@ -15,7 +15,7 @@ public interface PrefixRepository extends JpaRepository<Prefix, BigInteger>{
 
 	public boolean existsByIdAndUserId(BigInteger prefixId, BigInteger userId);
 
-	public boolean deleteByIdAndPrefixIsNotNull(BigInteger id);
+	public int deleteByIdAndPrefixIsNotNull(BigInteger id);
 
 	public Page<Prefix> findByUserId(BigInteger id, Pageable pageable);
 

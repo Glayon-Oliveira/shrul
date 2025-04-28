@@ -3,7 +3,7 @@ package com.lmlasmo.shrul.model;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,14 +47,14 @@ public class User implements UserDetails{
 
 	@Column
 	private String password;
-	
+
 	@Column(name = "first_name")
 	private String firstName;
-	
+
 	@Column(name = "last_name")
 	private String lastName;
-	
-	@Column(name = "create_at")
+
+	@Column(name = "created_at")
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@Column
@@ -66,8 +66,8 @@ public class User implements UserDetails{
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.ROLE_USER;
 
-	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Set<Prefix> prefixes = new HashSet<>();	
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
+	private Set<Prefix> prefixes = new LinkedHashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -28,7 +28,7 @@ import lombok.Setter;
 public class UrlAccess {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
 
 	@Column
@@ -53,9 +53,9 @@ public class UrlAccess {
 	@JoinColumn(name = "id_link")
 	@NonNull
 	private Link link;
-	
+
 	public UrlAccess(BigInteger id) {
 		this.id = id;
-	}	
+	}
 
 }

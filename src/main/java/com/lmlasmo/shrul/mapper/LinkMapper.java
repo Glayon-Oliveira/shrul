@@ -12,17 +12,17 @@ import com.lmlasmo.shrul.model.Prefix;
 
 @Mapper(componentModel = "spring")
 public interface LinkMapper {
-	
+
 	@Mapping(target = "prefix", source = "prefixId")
 	public Link dtoToLink(RegisterLinkDTO link);
-	
+
 	@Mapping(target = "prefixId", source = "prefix")
 	public LinkDTO linkToDTO(Link link);
-	
+
 	public default Prefix idToPrefix(BigInteger id) {
 		return new Prefix(id);
 	}
-	
+
 	public default BigInteger prefixToId(Prefix prefix) {
 		return prefix.getId();
 	}

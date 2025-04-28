@@ -14,7 +14,6 @@ import com.lmlasmo.shrul.dto.LinkDTO;
 import com.lmlasmo.shrul.dto.register.RegisterLinkDTO;
 import com.lmlasmo.shrul.dto.update.LinkUpdateDTO;
 import com.lmlasmo.shrul.infra.exception.DestinationNotFoundException;
-
 import com.lmlasmo.shrul.infra.exception.SystemFailedException;
 import com.lmlasmo.shrul.infra.security.AuthenticatedUser;
 import com.lmlasmo.shrul.mapper.LinkMapper;
@@ -23,7 +22,6 @@ import com.lmlasmo.shrul.model.Prefix;
 import com.lmlasmo.shrul.repository.LinkRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -33,10 +31,10 @@ import lombok.Getter;
 @Transactional
 public class LinkService {
 
-	private LinkRepository repository;	
+	private LinkRepository repository;
 	private LinkMapper mapper;
 
-	public LinkDTO save(@Valid RegisterLinkDTO linkDTO) {
+	public LinkDTO save(RegisterLinkDTO linkDTO) {
 		Link link = mapper.dtoToLink(linkDTO);
 
 		String id = "0000000000";
@@ -46,8 +44,8 @@ public class LinkService {
 			String prefixId = link.getPrefix().getId().toString();
 
 			String destine = link.getDestination();
-			String now = LocalDateTime.now().toString();			
-			
+			String now = LocalDateTime.now().toString();
+
 			id = createLinkCode(prefixId, destine, now).toLowerCase();
 
 		}while(repository.existsById(id));
@@ -57,30 +55,30 @@ public class LinkService {
 	}
 
 
-	public LinkDTO update(@Valid LinkUpdateDTO update) {
+	public LinkDTO update(LinkUpdateDTO update) {
 		Link link = repository.findById(update.getId()).orElseGet(() -> null);
 
 		Prefix prefix = new Prefix();
-		prefix.setId(update.getPrefix());
+		prefix.setId(update.getPrefixId());
 
-		if(link == null) throw new EntityNotFoundException("Link not found");		
-		
+		if(link == null) throw new EntityNotFoundException("Link not found");
+
 		link.setPrefix(prefix);
 		return mapper.linkToDTO(repository.save(link));
 	}
 
 	public void delete(String id) {
-		if(!repository.existsById(id)) throw new EntityNotFoundException("Link not found");		
+		if(!repository.existsById(id)) throw new EntityNotFoundException("Link not found");
 
 		repository.deleteById(id);
 
-		if(repository.existsById(id)) throw new SystemFailedException("Link not deleted");		
+		if(repository.existsById(id)) throw new SystemFailedException("Link not deleted");
 	}
 
 	public LinkDTO findById(String id) {
 		LinkDTO link = repository.findById(id).map(l -> mapper.linkToDTO(l)).orElseGet(() -> null);
 
-		if(link == null) throw new DestinationNotFoundException("Link not found");		
+		if(link == null) throw new DestinationNotFoundException("Link not found");
 
 		return link;
 	}
@@ -96,7 +94,7 @@ public class LinkService {
 	public String getDestination(String id) {
 		Link link = repository.findById(id).orElseGet(() -> null);
 
-		if(link == null) throw new DestinationNotFoundException("Link not found");	
+		if(link == null) throw new DestinationNotFoundException("Link not found");
 
 		return link.getDestination();
 	}
@@ -104,19 +102,21 @@ public class LinkService {
 	public String getDestination(String id, String prefix) {
 		Link link = repository.findByIdAndPrefixPrefix(id, prefix).orElseGet(() -> null);
 
-		if(link == null) throw new DestinationNotFoundException("Link not found");		
+		if(link == null) throw new DestinationNotFoundException("Link not found");
 
 		return link.getDestination();
 	}
-	
+
 	public boolean existsByIdAndUser(String linkId, BigInteger userId) {
-		return repository.existsByIdAndPrefixUserId(linkId, userId);
+		if(!repository.existsByIdAndPrefixUserId(linkId, userId)) throw new EntityNotFoundException("Link not found");
+		return true;
 	}
-	
+
 	public boolean existsByIdAndAuth(String linkId) {
-		return repository.existsByIdAndPrefixUserId(linkId, AuthenticatedUser.getUserId());
+		if(!repository.existsByIdAndPrefixUserId(linkId, AuthenticatedUser.getUserId())) throw new EntityNotFoundException("Link not found");
+		return true;
 	}
-	
+
 	public static String createLinkCode(String... values) {
 		String compilation = String.join("", values);
 

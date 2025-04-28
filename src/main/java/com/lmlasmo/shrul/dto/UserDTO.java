@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO extends EmailDTO{	
+public class UserDTO extends EmailDTO{
 
 	@JsonProperty("firstName")
 	@JsonAlias("first_name")

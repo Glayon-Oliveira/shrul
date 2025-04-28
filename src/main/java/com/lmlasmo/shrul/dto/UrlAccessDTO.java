@@ -29,13 +29,13 @@ public class UrlAccessDTO {
 
 	@JsonProperty("accessTime")
 	@JsonAlias("access_time")
-	private LocalDateTime accessTime;	
+	private LocalDateTime accessTime;
 
 	/*public UrlAccessDTO(UrlAccess access) {
 		this.linkId = access.getLink().getId();
 		this.browser = access.getBrowser();
 		this.device = access.getDevice();
-		this.accessTime = access.getAccessTime();		
+		this.accessTime = access.getAccessTime();
 		try {
 			this.ip = InetAddress.getByAddress(access.getIp()).getHostAddress();
 		} catch (UnknownHostException e) {

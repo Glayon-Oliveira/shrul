@@ -23,6 +23,6 @@ public class PrefixUpdateDTO {
 
 	@JsonProperty
 	@Pattern(regexp = "^[A-Za-z]+$")
-	private String prefix;	
-	
+	private String prefix;
+
 }

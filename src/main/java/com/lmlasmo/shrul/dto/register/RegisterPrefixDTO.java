@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RegisterPrefixDTO {
-	
+
 	@JsonProperty
 	@NotBlank
 	@Pattern(regexp = "^[a-z]+$")

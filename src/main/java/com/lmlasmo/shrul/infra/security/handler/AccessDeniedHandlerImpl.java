@@ -19,12 +19,12 @@ import lombok.AllArgsConstructor;
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
 	private ExceptionResponseWriter responseWriter;
-	
+
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		String message = "Access denied";
-		responseWriter.writer(HttpStatus.UNAUTHORIZED, request.getRequestURI(), message, response);
+		responseWriter.writer(HttpStatus.FORBIDDEN, request.getRequestURI(), message, response);
 	}
 
 }

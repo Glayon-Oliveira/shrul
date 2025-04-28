@@ -17,12 +17,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RegisterLinkDTO {	
+public class RegisterLinkDTO {
 
 	@JsonProperty
 	@NotBlank
 	@URL
-	private String destine;
+	private String destination;
 
 	@JsonProperty("prefixId")
 	@JsonAlias("prefix_id")

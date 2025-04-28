@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Component
 public class EmailCodeService {
-	
+
 	public static final int EXPIRES_MINUTES = 5;
-	
-	private String key = UUID.randomUUID().toString();	
-	private AtomicLong logicKey = new AtomicLong(0);	
+
+	private String key = UUID.randomUUID().toString();
+	private AtomicLong logicKey = new AtomicLong(0);
 
 	private byte somaByte(long value) {
 

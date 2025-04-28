@@ -18,15 +18,15 @@ import lombok.Getter;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private UserRepository repository;	
+	private UserRepository repository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = repository.findByEmail(email).orElseGet(() -> null);
 
 		if(user == null) throw new UsernameNotFoundException("User not found");
-		
-		return user;		
+
+		return user;
 	}
 
 }
