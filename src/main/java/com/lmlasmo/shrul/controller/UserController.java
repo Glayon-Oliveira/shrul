@@ -87,7 +87,7 @@ public class UserController{
 
 	@DeleteMapping	
 	public Void delete(@RequestBody @Valid DeleteAccountDTO delete){
-		emailCodeService.confirm(AuthenticatedUser.getUserEmail(),  delete.getCodeHash());
+		emailCodeService.confirm(AuthenticatedUser.getUserEmail(), delete.getCodeHash());
 		userService.delete(delete, AuthenticatedUser.getUserId());
 		return null;
 	}

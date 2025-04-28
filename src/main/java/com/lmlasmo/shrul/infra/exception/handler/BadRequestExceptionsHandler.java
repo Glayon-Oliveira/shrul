@@ -22,7 +22,7 @@ public class BadRequestExceptionsHandler {
 	
 	@ExceptionHandler(ActionFailedException.class)	
 	public ExceptionDTO handleBadRequestExceptions(ActionFailedException exception, HttpServletRequest request){
-		return ExceptionDTOFactory.getExceptionDTO(request, exception);		
+		return ExceptionDTOFactory.getExceptionDTO(request, exception);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)	
@@ -31,7 +31,7 @@ public class BadRequestExceptionsHandler {
 				.map(e -> new ErrorMessageDTO(e.getField(), e.getDefaultMessage()))
 				.toArray(ErrorMessageDTO[]::new);
 		
-		return ExceptionDTOFactory.getExceptionDTO(request, messages);		
+		return ExceptionDTOFactory.getExceptionDTO(request, messages);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)	

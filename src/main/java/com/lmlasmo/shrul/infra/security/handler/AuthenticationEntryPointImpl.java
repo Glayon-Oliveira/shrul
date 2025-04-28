@@ -22,7 +22,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException authException) throws IOException, ServletException {
+			AuthenticationException authException) throws IOException, ServletException {		
 		String message = "Invalid, missing, or expired token.";
 		responseWriter.writer(HttpStatus.UNAUTHORIZED, request.getRequestURI(), message, response);
 	}

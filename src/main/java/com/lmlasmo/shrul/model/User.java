@@ -54,7 +54,7 @@ public class User implements UserDetails{
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "create_at")
+	@Column(name = "created_at")
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@Column

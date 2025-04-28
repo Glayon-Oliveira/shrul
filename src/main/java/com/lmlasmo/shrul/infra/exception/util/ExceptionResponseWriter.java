@@ -20,8 +20,7 @@ public class ExceptionResponseWriter {
 	
 	private ObjectMapper mapper;
 	
-	public void writer(HttpStatus status, String path, String message, HttpServletResponse response) throws IOException {
-		
+	public void writer(HttpStatus status, String path, String message, HttpServletResponse response) throws IOException {		
 		ExceptionDTO exception = new ExceptionDTO(status, path, new ErrorMessageDTO(message));
 		
 		String exceptionValue = mapper.writeValueAsString(exception);
@@ -30,6 +29,7 @@ public class ExceptionResponseWriter {
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.getWriter().write(exceptionValue);
+		response.flushBuffer();
 	}
 
 }
