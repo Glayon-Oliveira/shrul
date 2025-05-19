@@ -1,5 +1,6 @@
 package com.lmlasmo.shrul.data.redirect;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,7 +16,8 @@ public interface RedirectProvider {
 				Arguments.of("/PREFIXTEST", null, 404),
 				Arguments.of("", null, 303),
 				Arguments.of("/", null, 404),
-				Arguments.of("", "", 404));
+				Arguments.of("", "", 404),
+				Arguments.of("/"+UUID.randomUUID().toString(), "", 404));
 	}
 
 }

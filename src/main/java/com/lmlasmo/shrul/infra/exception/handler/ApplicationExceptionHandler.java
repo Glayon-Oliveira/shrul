@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.lmlasmo.shrul.dto.exception.ExceptionDTO;
 import com.lmlasmo.shrul.infra.exception.DestinationNotFoundException;
@@ -31,6 +33,12 @@ public class ApplicationExceptionHandler {
 	@ResponseStatus(code = HttpStatus.CONFLICT)
 	public ExceptionDTO handleConflictExceptions(Exception exception, HttpServletRequest request){
 		return ExceptionDTOFactory.getExceptionDTO(HttpStatus.CONFLICT, request, exception);
+	}
+	
+	@ExceptionHandler(exception = {NoHandlerFoundException.class, NoResourceFoundException.class})
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)	
+	public Void handleNotFoundExceptions(Exception exception) {
+		return null;
 	}
 
 	@ExceptionHandler(exception = {EmptyResultDataAccessException.class, EntityNotFoundException.class})
