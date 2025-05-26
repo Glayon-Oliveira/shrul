@@ -1,0 +1,65 @@
+services:
+ app-shrul:
+  build: 
+   context: .
+   target: ${BUILD_TARGET:-final}
+  container_name: app-shrul
+  networks:
+   - shrul-network  
+  ports:
+   - 8080:8080
+  env_file:
+   - .env
+  environment:
+   MYSQL_HOST: ${MYSQL_HOST:-db-shrul}
+   MYSQL_USERNAME: ${MYSQL_USERNAME:-root}
+   MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+   MAIL_HOST: ${MAIL_HOST:-mail-shrul}
+   MAIL_PORT: ${MAIL_PORT:-1025}
+   MAIL_USERNAME: ${MAIL_USERNAME:-root}
+   MAIL_PASSWORD: ${MAIL_PASSWORD:-root}
+   MAIL_STARTTLS_ENABLE: ${MAIL_STARTTLS_ENABLE:-false}
+   MAIL_SSL_ENABLE: ${MAIL_SSL_ENABLE:-false}
+  restart: on-failure
+   
+ db-shrul:
+  image: mysql:8.0
+  container_name: db-shrul
+  profiles:
+   - db
+   - all
+  volumes:
+   - shrul-db-data:/var/lib/mysql/
+  networks:
+   - shrul-network
+  env_file:
+   - .env
+  environment:
+   MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-""}
+   MYSQL_DATABASE: shrul
+   MYSQL_CHARSET: utf8mb4
+   MYSQL_COLLATION: utf8mb4_unicode_ci
+   
+ mail-shrul:
+  image: axllent/mailpit
+  container_name: mail-shrul
+  profiles:
+   - mailpit
+   - all
+  networks:
+   - shrul-network
+  ports:
+   - 8025:8025
+  env_file:
+   - .env
+  environment:
+   MP_SMTP_AUTH: true
+   MP_SMTP_AUTH_ALLOW_INSECURE: true
+   MP_SMTP_USER: ${MP_SMTP_USER:-root}
+   MP_SMTP_PASS: ${MP_SMTP_PASS:-root}
+
+networks:
+ shrul-network:
+
+volumes:
+ shrul-db-data:
